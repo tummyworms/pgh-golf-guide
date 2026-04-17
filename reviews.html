@@ -222,15 +222,19 @@
   </div>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="js/firebase-init.js"></script>
 <script src="js/app.js"></script>
 <script>
   let activeFilter = 'all';
+  let _allPosts = [];
 
   function render() {
     const admin     = isAdminLoggedIn();
     const showDraft = admin && document.getElementById('showDrafts').checked;
-    let   all       = admin ? getPosts() : getPublishedPosts();
-    if (!showDraft) all = all.filter(p => p.status === 'published');
+    let   all       = [..._allPosts];
+    if (!admin || !showDraft) all = all.filter(p => p.status === 'published');
     if (activeFilter === 'Public')  all = all.filter(p => p.type === 'Public');
     if (activeFilter === 'Private') all = all.filter(p => p.type === 'Private');
     all = all.sort((a,b) => new Date(b.dateReviewed) - new Date(a.dateReviewed));
@@ -314,7 +318,10 @@
     document.body.style.overflow = '';
   }
 
-  function editPost(id) { const p = getPost(id); if (p) openCompose(p); }
+  function editPost(id) {
+    const p = _allPosts.find(p => String(p.id) === String(id));
+    if (p) openCompose(p);
+  }
 
   function collectForm(status) {
     const courseName = document.getElementById('fCourseName').value.trim();
@@ -323,7 +330,7 @@
     if (!body)       { showToast('Review body is required.'); return null; }
     const existingId = document.getElementById('editPostId').value;
     return {
-      id:           existingId ? parseInt(existingId) : Date.now(),
+      id:           existingId || null,
       courseName,
       location:     document.getElementById('fLocation').value.trim(),
       dateReviewed: document.getElementById('fDateReviewed').value,
@@ -341,30 +348,29 @@
     };
   }
 
-  function publishPost() {
+  async function publishPost() {
     const data = collectForm('published');
     if (!data) return;
-    savePost(data); closeCompose(); render();
+    await savePost(data); closeCompose();
     showToast('Review published!');
   }
 
-  function saveAsDraft() {
+  async function saveAsDraft() {
     const data = collectForm('draft');
     if (!data) return;
-    savePost(data); closeCompose(); render();
+    await savePost(data); closeCompose();
     showToast('Draft saved.');
   }
 
-  function toggleDraft(id) {
-    const p = getPost(id); if (!p) return;
-    savePost({ ...p, status: p.status === 'published' ? 'draft' : 'published' });
-    render();
+  async function toggleDraft(id) {
+    const p = _allPosts.find(p => String(p.id) === String(id)); if (!p) return;
+    await savePost({ ...p, status: p.status === 'published' ? 'draft' : 'published' });
     showToast(p.status === 'published' ? 'Moved to drafts.' : 'Published!');
   }
 
-  function handleDelete(id) {
+  async function handleDelete(id) {
     if (!confirm('Delete this review permanently?')) return;
-    deletePost(id); render();
+    await deletePost(id);
     showToast('Review deleted.');
   }
 
@@ -430,7 +436,11 @@
   function onAdminStateChange() { render(); }
 
   document.addEventListener('DOMContentLoaded', () => {
-    render();
+    // Real-time listener — re-renders whenever Firestore data changes
+    db.collection('posts').onSnapshot(snap => {
+      _allPosts = snap.docs.map(d => d.data());
+      render();
+    });
     document.querySelectorAll('.filter-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));

@@ -151,25 +151,30 @@
   </div>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="js/firebase-init.js"></script>
 <script src="js/app.js"></script>
 <script>
   let activeFilter = 'all';
+  let _allCourses = [];
+  let _allPosts   = [];
 
   function render() {
     const admin  = isAdminLoggedIn();
     const search = document.getElementById('searchBox').value.toLowerCase();
-    const posts  = getPosts();
 
-    let courses = getCourses();
+    let courses = [..._allCourses];
     if (activeFilter === 'Public')   courses = courses.filter(c => c.type === 'Public');
     if (activeFilter === 'Private')  courses = courses.filter(c => c.type === 'Private');
-    if (activeFilter === 'reviewed') courses = courses.filter(c => getLinkedPost(c, posts));
+    if (activeFilter === 'reviewed') courses = courses.filter(c => getLinkedPost(c, _allPosts));
     if (search) courses = courses.filter(c =>
       c.name.toLowerCase().includes(search) || c.location.toLowerCase().includes(search)
     );
+    courses.sort((a, b) => Number(a.id) - Number(b.id));
 
     document.getElementById('courseCount').textContent = `${courses.length} course${courses.length!==1?'s':''}`;
-    document.getElementById('adminAddBar').style.display    = admin ? '' : 'none';
+    document.getElementById('adminAddBar').style.display      = admin ? '' : 'none';
     document.getElementById('adminActionsHead').style.display = admin ? '' : 'none';
 
     const tbody = document.getElementById('courseTableBody');
@@ -180,12 +185,12 @@
 
     tbody.innerHTML = courses.map(c => {
       const typeCls = c.type.toLowerCase().replace(/[^a-z]/g,'');
-      const post    = getLinkedPost(c, posts);
+      const post    = getLinkedPost(c, _allPosts);
       const reviewCell = post
         ? `<a href="post.html?id=${post.id}" class="reviewed-link">Read Review →</a>`
         : `<span class="no-review">Not yet reviewed</span>`;
       const adminCell = admin
-        ? `<td style="white-space:nowrap;"><button class="btn btn-xs btn-danger" onclick="handleRemoveCourse(${c.id})" title="Remove">✕</button></td>`
+        ? `<td style="white-space:nowrap;"><button class="btn btn-xs btn-danger" onclick="handleRemoveCourse('${c.id}')" title="Remove">✕</button></td>`
         : '';
       return `
         <tr>
@@ -214,29 +219,36 @@
     btn.textContent    = open ? '− Cancel' : '+ Add Course';
   }
 
-  function handleAddCourse() {
+  async function handleAddCourse() {
     const name = document.getElementById('ncName').value.trim();
     const loc  = document.getElementById('ncLoc').value.trim();
     const dist = document.getElementById('ncDist').value.trim();
     const type = document.getElementById('ncType').value;
     if (!name || !loc) { showToast('Name and location are required.'); return; }
-    addCourseToDirectory({ name, location: loc, dist, type });
+    await addCourseToDirectory({ name, location: loc, dist, type });
     ['ncName','ncLoc','ncDist'].forEach(id => document.getElementById(id).value = '');
-    render();
     showToast(`"${name}" added.`);
   }
 
-  function handleRemoveCourse(id) {
+  async function handleRemoveCourse(id) {
     if (!confirm('Remove this course from the directory?')) return;
-    removeCourseFromDirectory(id);
-    render();
+    await removeCourseFromDirectory(id);
     showToast('Course removed.');
   }
 
   function onAdminStateChange() { render(); }
 
   document.addEventListener('DOMContentLoaded', () => {
-    render();
+    // Real-time listeners for courses and posts
+    db.collection('courses').onSnapshot(snap => {
+      _allCourses = snap.docs.map(d => d.data());
+      render();
+    });
+    db.collection('posts').onSnapshot(snap => {
+      _allPosts = snap.docs.map(d => d.data());
+      render();
+    });
+
     document.querySelectorAll('.filter-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));

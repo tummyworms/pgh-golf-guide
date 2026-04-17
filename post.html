@@ -203,14 +203,17 @@
   </div>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="js/firebase-init.js"></script>
 <script src="js/app.js"></script>
 <script>
   const params = new URLSearchParams(window.location.search);
-  const postId = parseInt(params.get('id'));
+  const postId = params.get('id');
   let   currentPost = null;
 
-  function loadPost() {
-    const post = getPost(postId);
+  async function loadPost() {
+    const post = await getPost(postId);
     currentPost = post;
     const el = document.getElementById('postContent');
 
@@ -330,30 +333,29 @@
     };
   }
 
-  function publishPost() {
+  async function publishPost() {
     const data = collectForm('published'); if (!data) return;
-    savePost(data); closeCompose(); loadPost();
+    await savePost(data); closeCompose(); await loadPost();
     showToast('Review updated and published!');
   }
 
-  function saveAsDraft() {
+  async function saveAsDraft() {
     const data = collectForm('draft'); if (!data) return;
-    savePost(data); closeCompose(); loadPost();
+    await savePost(data); closeCompose(); await loadPost();
     showToast('Draft saved.');
   }
 
-  function togglePublish() {
+  async function togglePublish() {
     if (!currentPost) return;
     const newStatus = currentPost.status === 'published' ? 'draft' : 'published';
-    savePost({ ...currentPost, status: newStatus });
-    currentPost.status = newStatus;
-    loadPost();
+    await savePost({ ...currentPost, status: newStatus });
+    await loadPost();
     showToast(newStatus === 'published' ? 'Published.' : 'Moved to draft.');
   }
 
-  function handleDelete() {
+  async function handleDelete() {
     if (!confirm('Delete this review permanently?')) return;
-    deletePost(postId);
+    await deletePost(postId);
     window.location.href = 'reviews.html';
   }
 

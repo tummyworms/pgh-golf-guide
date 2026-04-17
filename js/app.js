@@ -24,7 +24,6 @@ function adminLogout() { sessionStorage.removeItem(SESSION_KEY); }
 
 // ── Course directory (~60-mile radius of Pittsburgh) ──
 const DEFAULT_COURSES = [
-  // ── Public ──────────────────────────────────────────────────────────────────
   { id:1,  name:'Oakmont Country Club',            location:'Oakmont, PA',            dist:'~17 mi NE',  type:'Private' },
   { id:2,  name:'Fox Chapel Golf Club',            location:'Fox Chapel, PA',         dist:'~8 mi NE',   type:'Private' },
   { id:3,  name:'Pittsburgh Field Club',           location:'Fox Chapel, PA',         dist:'~8 mi NE',   type:'Private' },
@@ -57,49 +56,57 @@ const DEFAULT_COURSES = [
   { id:30, name:'White Oak Golf Course',           location:'White Oak, PA',          dist:'~12 mi SE',  type:'Public'  },
 ];
 
-const COURSES_KEY = 'pgolf_courses';
-
-function getCourses() {
-  const s = localStorage.getItem(COURSES_KEY);
-  if (s) return JSON.parse(s);
-  localStorage.setItem(COURSES_KEY, JSON.stringify(DEFAULT_COURSES));
-  return DEFAULT_COURSES;
-}
-function saveCourseList(list)         { localStorage.setItem(COURSES_KEY, JSON.stringify(list)); }
-function addCourseToDirectory(c)      { const l=getCourses(); l.push({id:Date.now(),...c}); saveCourseList(l); }
-function removeCourseFromDirectory(id){ saveCourseList(getCourses().filter(c=>c.id!==id)); }
-// Link or unlink a review post to a course in the directory
-function linkReviewToCourse(courseId, postId) {
-  const list = getCourses();
-  const idx = list.findIndex(c => c.id === courseId);
-  if (idx !== -1) { list[idx].postId = postId; saveCourseList(list); }
+// Seed default courses into Firestore on first run
+async function seedCoursesIfEmpty() {
+  const snap = await db.collection('courses').limit(1).get();
+  if (!snap.empty) return;
+  const batch = db.batch();
+  DEFAULT_COURSES.forEach(c => {
+    batch.set(db.collection('courses').doc(String(c.id)), c);
+  });
+  await batch.commit();
 }
 
-// ── Review posts ─────────────────────────────────
-const POSTS_KEY = 'pgolf_posts';
-
-function getPosts()     { return JSON.parse(localStorage.getItem(POSTS_KEY) || '[]'); }
-function getPost(id)    { return getPosts().find(p => p.id === id); }
-function savePosts(arr) { localStorage.setItem(POSTS_KEY, JSON.stringify(arr)); }
-
-function savePost(data) {
-  const posts = getPosts();
-  const idx   = posts.findIndex(p => p.id === data.id);
-  if (idx !== -1) {
-    posts[idx] = { ...posts[idx], ...data };
-  } else {
-    posts.unshift({ id: Date.now(), ...data });
-  }
-  savePosts(posts);
-  return data.id || posts[0].id;
+// ── Firestore: Courses ────────────────────────────
+async function getCourses() {
+  const snap = await db.collection('courses').get();
+  return snap.docs.map(doc => doc.data());
 }
 
-function deletePost(id) {
-  savePosts(getPosts().filter(p => p.id !== id));
+async function addCourseToDirectory(c) {
+  const id = String(Date.now());
+  await db.collection('courses').doc(id).set({ ...c, id });
 }
 
-function getPublishedPosts() {
-  return getPosts().filter(p => p.status === 'published').sort((a,b) => new Date(b.dateReviewed) - new Date(a.dateReviewed));
+async function removeCourseFromDirectory(id) {
+  await db.collection('courses').doc(String(id)).delete();
+}
+
+// ── Firestore: Posts ──────────────────────────────
+async function getPosts() {
+  const snap = await db.collection('posts').get();
+  return snap.docs.map(doc => doc.data());
+}
+
+async function getPost(id) {
+  const doc = await db.collection('posts').doc(String(id)).get();
+  return doc.exists ? doc.data() : null;
+}
+
+async function savePost(data) {
+  const id = data.id ? String(data.id) : String(Date.now());
+  await db.collection('posts').doc(id).set({ ...data, id }, { merge: true });
+  return id;
+}
+
+async function deletePost(id) {
+  await db.collection('posts').doc(String(id)).delete();
+}
+
+async function getPublishedPosts() {
+  const snap = await db.collection('posts').where('status', '==', 'published').get();
+  return snap.docs.map(doc => doc.data())
+    .sort((a, b) => new Date(b.dateReviewed) - new Date(a.dateReviewed));
 }
 
 // ── Helpers ──────────────────────────────────────
@@ -232,6 +239,7 @@ async function handleLoginSubmit(e) {
 
 // ── Init ──────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
+  seedCoursesIfEmpty();
   setActiveNav();
   updateAdminNav();
   document.getElementById('loginModal')?.addEventListener('click', e => { if (e.target.id==='loginModal') closeLoginModal(); });
