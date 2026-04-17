@@ -251,18 +251,22 @@
 
       ${post.imageUrl ? `<div class="post-hero-img"><img src="${escapeHtml(post.imageUrl)}" alt="${escapeHtml(post.courseName)}" loading="lazy"></div>` : ''}
 
-      ${stats.length ? `
-        <div class="post-stats-bar">
-          ${stats.map(s => `
-            <div class="stat-cell">
-              <div class="stat-label">${escapeHtml(s.label)}</div>
-              <div class="stat-val">${s.val}</div>
-            </div>`).join('')}
-        </div>` : ''}
-
-      ${renderMeters(post.meters)}
-
-      <div class="post-body">${renderBody(post.body)}</div>
+      <div class="post-layout">
+        <div class="post-main">
+          <div class="post-body">${renderBody(post.body)}</div>
+        </div>
+        <aside class="post-side">
+          ${stats.length ? `
+            <div class="post-stats-bar">
+              ${stats.map(s => `
+                <div class="stat-cell">
+                  <div class="stat-label">${escapeHtml(s.label)}</div>
+                  <div class="stat-val">${s.val}</div>
+                </div>`).join('')}
+            </div>` : ''}
+          ${renderMeters(post.meters)}
+        </aside>
+      </div>
     `;
 
     updateAdminBar();

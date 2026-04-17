@@ -81,9 +81,9 @@ h1,h2,h3,h4 { font-family: var(--serif); line-height: 1.2; }
 }
 
 .header-inner {
-  max-width: 1160px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 32px;
   height: 48px;
   display: flex;
   align-items: center;
@@ -189,7 +189,7 @@ h1,h2,h3,h4 { font-family: var(--serif); line-height: 1.2; }
 .hero-content {
   position: relative;
   z-index: 1;
-  max-width: 720px;
+  max-width: 880px;
   margin: 0 auto;
 }
 
@@ -205,7 +205,7 @@ h1,h2,h3,h4 { font-family: var(--serif); line-height: 1.2; }
   font-family: var(--sans);
   font-size: 1.08rem;
   color: rgba(255,255,255,0.72);
-  max-width: 500px;
+  max-width: 620px;
   margin: 0 auto 36px;
   font-weight: 300;
   line-height: 1.7;
@@ -252,7 +252,7 @@ h1,h2,h3,h4 { font-family: var(--serif); line-height: 1.2; }
 }
 
 /* ── Page wrap / section ── */
-.page-wrap { max-width: 1160px; margin: 0 auto; padding: 0 24px; }
+.page-wrap { max-width: 1400px; margin: 0 auto; padding: 0 32px; }
 .section { padding: 64px 0; }
 
 .section-head {
@@ -404,7 +404,7 @@ h1,h2,h3,h4 { font-family: var(--serif); line-height: 1.2; }
 }
 
 /* ── Single post ── */
-.post-article { max-width: 760px; margin: 0 auto; padding: 56px 24px 88px; }
+.post-article { max-width: 1400px; margin: 0 auto; padding: 56px 40px 88px; }
 
 .back-link {
   display: inline-flex;
@@ -536,7 +536,7 @@ h1,h2,h3,h4 { font-family: var(--serif); line-height: 1.2; }
 }
 .compose-overlay.open { display: block; }
 
-.compose-inner { max-width: 860px; margin: 0 auto; padding: 32px 24px 80px; }
+.compose-inner { max-width: 1100px; margin: 0 auto; padding: 32px 32px 80px; }
 .compose-topbar {
   display: flex;
   align-items: center;
@@ -713,7 +713,7 @@ textarea { resize: vertical; }
   border-top: 1px solid var(--rule);
   border-bottom: 1px solid var(--rule);
 }
-.sponsors-inner { max-width: 1160px; margin: 0 auto; }
+.sponsors-inner { max-width: 1400px; margin: 0 auto; }
 .sponsors-label {
   text-align: center;
   font-family: var(--sans);
@@ -1039,7 +1039,7 @@ footer {
   padding: 56px 24px 28px;
   border-top: 2px solid var(--gold);
 }
-.footer-inner { max-width: 1160px; margin: 0 auto; }
+.footer-inner { max-width: 1400px; margin: 0 auto; }
 .footer-top {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr;
@@ -1247,11 +1247,84 @@ footer {
 }
 .meter-num-inp:focus { outline: none; border-color: var(--green-field); box-shadow: 0 0 0 3px rgba(30,107,58,0.1); }
 
+/* ── Post two-column layout ── */
+.post-layout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 56px;
+  align-items: start;
+  margin-top: 40px;
+}
+
+.post-side {
+  position: sticky;
+  top: 64px;
+}
+
+/* Sidebar stat bar — vertical stack */
+.post-side .post-stats-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-bottom: 28px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--rule);
+  background: var(--rule);
+}
+.post-side .stat-cell {
+  text-align: left;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.post-side .stat-label { margin-bottom: 0; }
+
+/* Sidebar meters — horizontal row per gauge */
+.post-side .meters-section {
+  border-top: none;
+  border-bottom: none;
+  padding: 0;
+  margin: 0;
+}
+.post-side .meters-grid {
+  flex-direction: column;
+  gap: 10px;
+  align-items: stretch;
+}
+.post-side .meter-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-align: left;
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+}
+.post-side .meter-svg-wrap svg { width: 56px; height: 56px; flex-shrink: 0; }
+.post-side .meter-card-overall .meter-svg-wrap svg { width: 68px; height: 68px; }
+.post-side .meter-label {
+  margin-top: 0;
+  text-align: left;
+  font-size: 0.74rem;
+}
+.post-side .meters-heading {
+  font-size: 0.63rem;
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+}
+
 /* ── Responsive ── */
 @media (max-width: 900px) {
   .footer-top { grid-template-columns: 1fr 1fr; }
   .contact-grid { grid-template-columns: 1fr; }
   .compose-grid { grid-template-columns: 1fr; }
+  .post-layout { grid-template-columns: 1fr; gap: 0; }
+  .post-side { position: static; margin-top: 40px; }
+  .post-article { padding: 40px 24px 64px; }
 }
 
 @media (max-width: 640px) {
