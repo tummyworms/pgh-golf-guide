@@ -168,6 +168,12 @@
         </div>
         <div id="photoPreview" class="photo-preview"></div>
       </div>
+      <div class="form-group full">
+        <label class="cotw-check-label">
+          <input type="checkbox" id="fCourseOfWeek" />
+          <span class="cotw-check-text">🏆 Course of the Week</span>
+        </label>
+      </div>
     </div>
     <div style="margin-top:24px;">
       <span class="compose-body-label">Full Review *</span>
@@ -237,7 +243,11 @@
     if (!admin || !showDraft) all = all.filter(p => p.status === 'published');
     if (activeFilter === 'Public')  all = all.filter(p => p.type === 'Public');
     if (activeFilter === 'Private') all = all.filter(p => p.type === 'Private');
-    all = all.sort((a,b) => new Date(b.dateReviewed) - new Date(a.dateReviewed));
+    all = all.sort((a,b) => {
+      if (a.courseOfWeek && !b.courseOfWeek) return -1;
+      if (!a.courseOfWeek && b.courseOfWeek) return 1;
+      return new Date(b.dateReviewed) - new Date(a.dateReviewed);
+    });
 
     document.getElementById('postCount').textContent = `${all.length} review${all.length!==1?'s':''}`;
     document.getElementById('adminToolbar').style.display = admin ? '' : 'none';
@@ -256,6 +266,7 @@
 
   function postCardHTML(p, admin) {
     const draft = p.status === 'draft' ? `<span class="draft-badge">Draft</span>` : '';
+    const cotwBadge = p.courseOfWeek ? `<div class="cotw-badge"><span class="cotw-trophy">🏆</span> Course of the Week</div>` : '';
     const adminBtns = admin ? `
       <div style="display:flex; gap:6px; margin-top:10px; padding-top:10px; border-top:1px solid var(--rule);">
         <button class="btn btn-xs btn-outline" onclick="editPost(${p.id}); event.stopPropagation()">Edit</button>
@@ -267,9 +278,10 @@
       : '';
 
     return `
-      <article class="post-card">
+      <article class="post-card${p.courseOfWeek ? ' post-card-cotw' : ''}">
         <div class="post-card-thumb">
           ${thumbImg}
+          ${cotwBadge}
           <span class="card-type">${escapeHtml(p.type||'Course')}</span>
           <span class="card-rating">${renderStars(p.rating)}</span>
         </div>
@@ -310,6 +322,8 @@
     if (fileInput) fileInput.value = '';
     const preview = document.getElementById('photoPreview');
     if (preview) preview.innerHTML = post?.imageUrl ? `<img src="${escapeHtml(post.imageUrl)}" alt="Current photo">` : '';
+    const cotw = document.getElementById('fCourseOfWeek');
+    if (cotw) cotw.checked = !!(post?.courseOfWeek);
     initMeters(post?.meters);
   }
 
@@ -342,6 +356,7 @@
       greensFee:    document.getElementById('fGreensFee').value.trim(),
       excerpt:      document.getElementById('fExcerpt').value.trim(),
       imageUrl:     document.getElementById('fImageUrl').value.trim(),
+      courseOfWeek: document.getElementById('fCourseOfWeek').checked,
       meters:       collectMeters(),
       body,
       status,

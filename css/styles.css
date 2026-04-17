@@ -1247,6 +1247,84 @@ footer {
 }
 .meter-num-inp:focus { outline: none; border-color: var(--green-field); box-shadow: 0 0 0 3px rgba(30,107,58,0.1); }
 
+/* ── Course of the Week ── */
+@keyframes cotw-shine {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+/* Card badge (sits top-center of the thumb) */
+.cotw-badge {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: linear-gradient(90deg, #b8760a, #f2c14e, #e0a020, #f2c14e, #b8760a);
+  background-size: 200% auto;
+  animation: cotw-shine 2.4s linear infinite;
+  color: #3a1f00;
+  font-family: var(--sans);
+  font-size: 0.65rem;
+  font-weight: 900;
+  letter-spacing: 1.1px;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+  box-shadow: 0 2px 10px rgba(200,144,10,0.5);
+  z-index: 2;
+}
+.cotw-trophy { font-size: 0.85rem; }
+
+/* Card border highlight */
+.post-card-cotw {
+  border-left-color: var(--gold) !important;
+  box-shadow: 0 0 0 1.5px rgba(200,144,10,0.25), var(--shadow-sm);
+}
+
+/* Full post page banner */
+.cotw-banner {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(90deg, #b8760a, #f2c14e, #e0a020, #f2c14e, #b8760a);
+  background-size: 200% auto;
+  animation: cotw-shine 2.4s linear infinite;
+  color: #3a1f00;
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 6px 18px;
+  border-radius: 24px;
+  margin-bottom: 18px;
+  box-shadow: 0 3px 14px rgba(200,144,10,0.4);
+}
+.cotw-banner .cotw-trophy { font-size: 1.1rem; }
+
+/* Admin compose checkbox */
+.cotw-check-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--ink);
+  padding: 10px 16px;
+  border: 1.5px solid var(--rule);
+  border-radius: var(--radius);
+  transition: var(--ease);
+}
+.cotw-check-label:hover { border-color: var(--gold); background: var(--gold-pale); }
+.cotw-check-label input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--gold); cursor: pointer; }
+.cotw-check-text { font-size: 0.95rem; }
+
 /* ── Post two-column layout ── */
 .post-layout {
   display: grid;

@@ -149,6 +149,12 @@
         </div>
         <div id="photoPreview" class="photo-preview"></div>
       </div>
+      <div class="form-group full">
+        <label class="cotw-check-label">
+          <input type="checkbox" id="fCourseOfWeek" />
+          <span class="cotw-check-text">🏆 Course of the Week</span>
+        </label>
+      </div>
     </div>
     <div style="margin-top:24px;">
       <span class="compose-body-label">Full Review *</span>
@@ -245,6 +251,7 @@
         ${post.status==='draft' ? '<span class="draft-badge">Draft</span>' : ''}
       </div>
 
+      ${post.courseOfWeek ? `<div class="cotw-banner"><span class="cotw-trophy">🏆</span> Course of the Week</div>` : ''}
       <h1>${escapeHtml(post.courseName)}</h1>
       <p class="post-location-sub">${escapeHtml(post.location)}</p>
       <div class="post-divider"></div>
@@ -306,6 +313,8 @@
     if (fileInput) fileInput.value = '';
     const preview = document.getElementById('photoPreview');
     if (preview) preview.innerHTML = p.imageUrl ? `<img src="${escapeHtml(p.imageUrl)}" alt="Current photo">` : '';
+    const cotw = document.getElementById('fCourseOfWeek');
+    if (cotw) cotw.checked = !!(p.courseOfWeek);
     initMeters(p.meters);
   }
 
@@ -331,6 +340,7 @@
       greensFee:    document.getElementById('fGreensFee').value.trim(),
       excerpt:      document.getElementById('fExcerpt').value.trim(),
       imageUrl:     document.getElementById('fImageUrl').value.trim(),
+      courseOfWeek: document.getElementById('fCourseOfWeek').checked,
       meters:       collectMeters(),
       body,
       status,
