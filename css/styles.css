@@ -1305,7 +1305,16 @@ footer {
   padding: 10px 14px;
 }
 .post-side .meter-svg-wrap svg { width: 56px; height: 56px; flex-shrink: 0; }
-.post-side .meter-card-overall .meter-svg-wrap svg { width: 68px; height: 68px; }
+.post-side .meter-card-overall {
+  flex-direction: column;
+  text-align: center;
+  padding: 16px 14px;
+  background: var(--bg-soft);
+  border-color: var(--gold);
+  margin-bottom: 4px;
+}
+.post-side .meter-card-overall .meter-svg-wrap svg { width: 110px; height: 110px; }
+.post-side .meter-card-overall .meter-label { text-align: center; font-size: 0.8rem; margin-top: 8px; color: var(--green-dark); }
 .post-side .meter-label {
   margin-top: 0;
   text-align: left;
