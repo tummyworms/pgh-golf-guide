@@ -156,7 +156,7 @@ h1,h2,h3,h4 { font-family: var(--serif); line-height: 1.2; }
   background: var(--green-dark);
   background-image:
     linear-gradient(rgba(14,33,24,0.60), rgba(8,22,14,0.76)),
-    url('https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=1600&q=80&auto=format&fit=crop');
+    url('https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Pittsburgh_Pennsylvania.jpg/1920px-Pittsburgh_Pennsylvania.jpg');
   background-size: cover;
   background-position: center 35%;
   padding: 88px 24px 116px;
@@ -230,7 +230,7 @@ h1,h2,h3,h4 { font-family: var(--serif); line-height: 1.2; }
   background: var(--green-dark);
   background-image:
     linear-gradient(rgba(14,33,24,0.66), rgba(8,22,14,0.80)),
-    url('https://images.unsplash.com/photo-1592919505780-303950717480?w=1600&q=80&auto=format&fit=crop');
+    url('https://upload.wikimedia.org/wikipedia/commons/4/42/DowntownPittsburghNightScene.jpg');
   background-size: cover;
   background-position: center 40%;
   padding: 72px 24px 64px;
@@ -659,6 +659,7 @@ textarea { resize: vertical; }
   overflow: hidden;
 }
 .photo-strip-img {
+  position: relative;
   background-size: cover;
   background-position: center;
   filter: brightness(0.86) contrast(1.05) saturate(1.14) sepia(0.10);
@@ -668,6 +669,16 @@ textarea { resize: vertical; }
 .photo-strip-img:hover {
   filter: brightness(0.94) contrast(1.03) saturate(1.18) sepia(0.07);
   transform: scale(1.02);
+}
+.strip-caption {
+  position: absolute;
+  bottom: 8px;
+  left: 10px;
+  font-size: 0.68rem;
+  font-style: italic;
+  color: rgba(255,255,255,0.82);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.70);
+  pointer-events: none;
 }
 
 /* ── Photo upload UI ── */

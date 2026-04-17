@@ -50,9 +50,9 @@
 
 <!-- ── Photo Strip ── -->
 <div class="photo-strip">
-  <div class="photo-strip-img" style="background-image:url('https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=900&q=80&auto=format&fit=crop'); background-position: center 30%;"></div>
-  <div class="photo-strip-img" style="background-image:url('https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?w=900&q=80&auto=format&fit=crop'); background-position: center 50%;"></div>
-  <div class="photo-strip-img" style="background-image:url('https://images.unsplash.com/photo-1592919505780-303950717480?w=900&q=80&auto=format&fit=crop'); background-position: center 35%;"></div>
+  <div class="photo-strip-img" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Bob_O%27Connor_Golf_Course.jpg/1920px-Bob_O%27Connor_Golf_Course.jpg'); background-position: center 50%;"><span class="strip-caption">Bob O'Connor Golf Course · 1902</span></div>
+  <div class="photo-strip-img" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Schenley_Golf_Club_House_%281999.34.17%29.jpg/1920px-Schenley_Golf_Club_House_%281999.34.17%29.jpg'); background-position: center 40%;"><span class="strip-caption">Schenley Park, Clubhouse · c. 1900</span></div>
+  <div class="photo-strip-img" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/4/41/LongueVueClubandGolfCourse.jpg'); background-position: center 50%;"><span class="strip-caption">Longue Vue Club · 1920</span></div>
 </div>
 
 <!-- ── Sponsors ── -->
@@ -144,9 +144,13 @@
   });
 
   function postCardHTML(p) {
+    const thumbImg = p.imageUrl
+      ? `<img src="${escapeHtml(p.imageUrl)}" alt="${escapeHtml(p.courseName)}" class="card-thumb-img" loading="lazy">`
+      : '';
     return `
       <article class="post-card">
         <div class="post-card-thumb">
+          ${thumbImg}
           <span class="card-type">${escapeHtml(p.type||'Course')}</span>
           <span class="card-rating">${renderStars(p.rating)}</span>
         </div>
