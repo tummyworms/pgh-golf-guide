@@ -3,13 +3,24 @@
    ============================================= */
 
 // ── Admin Auth ──────────────────────────────────
-const ADMIN_USER = 'twb2113';
-const ADMIN_PASS = 'penny412';
-const SESSION_KEY = 'pgolf_admin';
+const ADMIN_USER      = 'twb2113';
+const ADMIN_PASS_HASH = '4dbce013b3dc4bdb7b7e0ce2818363fd9318e802a59e4ec4007ef41e0b9e0f5c';
+const SESSION_KEY     = 'pgolf_admin';
 
-function isAdminLoggedIn()        { return sessionStorage.getItem(SESSION_KEY) === 'true'; }
-function adminLogin(u, p)         { if (u===ADMIN_USER && p===ADMIN_PASS){ sessionStorage.setItem(SESSION_KEY,'true'); return true; } return false; }
-function adminLogout()            { sessionStorage.removeItem(SESSION_KEY); }
+async function sha256(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+function isAdminLoggedIn() { return sessionStorage.getItem(SESSION_KEY) === 'true'; }
+async function adminLogin(u, p) {
+  const hash = await sha256(p);
+  if (u === ADMIN_USER && hash === ADMIN_PASS_HASH) {
+    sessionStorage.setItem(SESSION_KEY, 'true'); return true;
+  }
+  return false;
+}
+function adminLogout() { sessionStorage.removeItem(SESSION_KEY); }
 
 // ── Course directory (~60-mile radius of Pittsburgh) ──
 const DEFAULT_COURSES = [
@@ -204,12 +215,12 @@ function closeLoginModal() {
   document.getElementById('loginUser').value = '';
   document.getElementById('loginPass').value = '';
 }
-function handleLoginSubmit(e) {
+async function handleLoginSubmit(e) {
   e.preventDefault();
   const u = document.getElementById('loginUser').value.trim();
   const p = document.getElementById('loginPass').value;
   const a = document.getElementById('loginAlert');
-  if (adminLogin(u, p)) {
+  if (await adminLogin(u, p)) {
     closeLoginModal(); updateAdminNav();
     if (typeof onAdminStateChange === 'function') onAdminStateChange(true);
     showToast('Welcome back!');
