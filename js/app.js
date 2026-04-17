@@ -3,8 +3,8 @@
    ============================================= */
 
 // ── Admin Auth ──────────────────────────────────
-const ADMIN_USER = 'admin';
-const ADMIN_PASS = 'pgolf2024';
+const ADMIN_USER = 'twb2113';
+const ADMIN_PASS = 'penny412';
 const SESSION_KEY = 'pgolf_admin';
 
 function isAdminLoggedIn()        { return sessionStorage.getItem(SESSION_KEY) === 'true'; }
