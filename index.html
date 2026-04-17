@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Guide to Pittsburgh Golf</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="site-logo">
+      <span class="logo-name">The Guide to Pittsburgh Golf</span>
+      <span class="logo-tagline">Know Before You Book</span>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu">☰</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="reviews.html">Reviews</a></li>
+      <li><a href="courses.html">Course Directory</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </div>
+</header>
+
+<!-- ── Hero ── -->
+<div class="home-hero">
+  <div class="hero-content">
+    <div class="eyebrow">Pittsburgh, Pennsylvania</div>
+    <h1>The Ultimate Guide to Pittsburgh Golf</h1>
+    <p>Where and where <em>not</em> to book your next tee time — every course within 60 miles, reviewed.</p>
+    <div class="hero-btns">
+      <a href="reviews.html" class="btn btn-gold">Read the Reviews</a>
+      <a href="courses.html" class="btn btn-hero-outline">Browse Courses</a>
+    </div>
+  </div>
+</div>
+
+<!-- ── Latest Reviews ── -->
+<div class="page-wrap">
+  <div class="section">
+    <div class="section-head">
+      <h2>Latest Reviews</h2>
+      <a href="reviews.html">All reviews →</a>
+    </div>
+    <div class="post-grid" id="latestPosts"></div>
+  </div>
+</div>
+
+<!-- ── Sponsors ── -->
+<div class="sponsors-section">
+  <div class="sponsors-inner">
+    <p class="sponsors-label">Proudly Supported By</p>
+    <div class="sponsor-grid">
+      <div class="sponsor-slot">Become a Sponsor</div>
+      <div class="sponsor-slot">Become a Sponsor</div>
+      <div class="sponsor-slot">Become a Sponsor</div>
+      <div class="sponsor-slot">Become a Sponsor</div>
+    </div>
+    <p class="sponsors-cta">Interested in partnering? <a href="contact.html">Let's talk.</a></p>
+  </div>
+</div>
+
+<!-- ── Footer ── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo">The Guide to Pittsburgh Golf</a>
+        <p>Know before you book. Western PA's most complete golf resource.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Navigate</h5>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="reviews.html">Reviews</a></li>
+          <li><a href="courses.html">Course Directory</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Connect</h5>
+        <ul>
+          <li><a href="contact.html">Get in Touch</a></li>
+          <li><a href="contact.html">Sponsorships</a></li>
+          <li><a href="contact.html">Course Submissions</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 The Guide to Pittsburgh Golf. All rights reserved.</span>
+      <span>Pittsburgh, PA &nbsp;&bull;&nbsp; <a href="#" id="adminNavBtn" class="admin-ghost-link">admin</a></span>
+    </div>
+  </div>
+</footer>
+
+<!-- ── Login Modal ── -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal-box">
+    <div class="modal-icon">⛳</div>
+    <h2>Admin Login</h2>
+    <p class="sub">Sign in to write and manage reviews</p>
+    <div id="loginAlert" class="alert"></div>
+    <form class="modal-form" id="loginForm">
+      <div class="form-group">
+        <label for="loginUser">Username</label>
+        <input type="text" id="loginUser" autocomplete="username" required />
+      </div>
+      <div class="form-group">
+        <label for="loginPass">Password</label>
+        <input type="password" id="loginPass" autocomplete="current-password" required />
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%">Sign In</button>
+    </form>
+  </div>
+</div>
+
+<script src="js/app.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const posts = getPublishedPosts().slice(0, 3);
+    const grid  = document.getElementById('latestPosts');
+
+    if (posts.length === 0) {
+      grid.innerHTML = `
+        <div class="empty-state" style="grid-column:1/-1">
+          <div class="icon">⛳</div>
+          <p>First reviews coming soon — check back after we hit the links.</p>
+        </div>`;
+    } else {
+      grid.innerHTML = posts.map(postCardHTML).join('');
+    }
+  });
+
+  function postCardHTML(p) {
+    return `
+      <article class="post-card">
+        <div class="post-card-thumb">
+          <span class="card-type">${escapeHtml(p.type||'Course')}</span>
+          <span class="card-rating">${renderStars(p.rating)}</span>
+        </div>
+        <div class="post-card-body">
+          <div class="post-location">${escapeHtml(p.location)}</div>
+          <h3><a href="post.html?id=${p.id}">${escapeHtml(p.courseName)}</a></h3>
+          <p class="post-excerpt">${escapeHtml(p.excerpt)}</p>
+          <div class="post-card-footer">
+            <span class="post-date">${formatDate(p.dateReviewed)}</span>
+            <a href="post.html?id=${p.id}" class="read-more">Read review →</a>
+          </div>
+        </div>
+      </article>`;
+  }
+</script>
+</body>
+</html>

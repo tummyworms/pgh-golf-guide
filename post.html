@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Course Review — The Guide to Pittsburgh Golf</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="site-logo">
+      <span class="logo-name">The Guide to Pittsburgh Golf</span>
+      <span class="logo-tagline">Know Before You Book</span>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu">☰</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="reviews.html">Reviews</a></li>
+      <li><a href="courses.html">Course Directory</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </div>
+</header>
+
+<!-- Admin bar -->
+<div class="admin-bar" id="adminBar">
+  <span>Admin</span>
+  <button class="btn btn-gold btn-sm" onclick="openEdit()">Edit Review</button>
+  <button class="btn btn-outline btn-sm" id="toggleBtn" onclick="togglePublish()" style="color:#fff; border-color:rgba(255,255,255,0.3);">Unpublish</button>
+  <button class="btn btn-danger btn-sm" onclick="handleDelete()">Delete</button>
+</div>
+
+<!-- Post content -->
+<article class="post-article" id="postContent"></article>
+
+<!-- ── Footer ── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo">The Guide to Pittsburgh Golf</a>
+        <p>Know before you book. Western PA's most complete golf resource.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Navigate</h5>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="reviews.html">Reviews</a></li>
+          <li><a href="courses.html">Course Directory</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Connect</h5>
+        <ul>
+          <li><a href="contact.html">Get in Touch</a></li>
+          <li><a href="contact.html">Sponsorships</a></li>
+          <li><a href="contact.html">Course Submissions</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 The Guide to Pittsburgh Golf. All rights reserved.</span>
+      <span>Pittsburgh, PA &nbsp;&bull;&nbsp; <a href="#" id="adminNavBtn" class="admin-ghost-link">admin</a></span>
+    </div>
+  </div>
+</footer>
+
+<!-- ── Compose overlay (edit) ── -->
+<div class="compose-overlay" id="composeOverlay">
+  <div class="compose-inner">
+    <div class="compose-topbar">
+      <h2>Edit Review</h2>
+      <div style="display:flex; gap:8px; flex-wrap:wrap;">
+        <button class="btn btn-outline btn-sm" onclick="saveAsDraft()">Save Draft</button>
+        <button class="btn btn-gold btn-sm"    onclick="publishPost()">Publish</button>
+        <button class="btn btn-ghost btn-sm"   onclick="closeCompose()">✕ Close</button>
+      </div>
+    </div>
+    <input type="hidden" id="editPostId" />
+    <div class="compose-grid">
+      <div class="form-group full">
+        <label for="fCourseName">Course Name *</label>
+        <input type="text" id="fCourseName" required />
+      </div>
+      <div class="form-group">
+        <label for="fLocation">Location *</label>
+        <input type="text" id="fLocation" required />
+      </div>
+      <div class="form-group">
+        <label for="fDateReviewed">Date Played</label>
+        <input type="date" id="fDateReviewed" />
+      </div>
+      <div class="form-group">
+        <label for="fRating">Rating</label>
+        <select id="fRating">
+          <option value="5">★★★★★ — Must Play (5)</option>
+          <option value="4">★★★★☆ — Great (4)</option>
+          <option value="3">★★★☆☆ — Solid (3)</option>
+          <option value="2">★★☆☆☆ — Fair (2)</option>
+          <option value="1">★☆☆☆☆ — Skip It (1)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="fType">Course Type</label>
+        <select id="fType">
+          <option value="Public">Public</option>
+          <option value="Private">Private</option>
+          <option value="Semi-Private">Semi-Private</option>
+          <option value="Resort">Resort</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="fDifficulty">Difficulty</label>
+        <select id="fDifficulty">
+          <option value="Beginner-Friendly">Beginner-Friendly</option>
+          <option value="Moderate">Moderate</option>
+          <option value="Challenging">Challenging</option>
+          <option value="Championship">Championship</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="fPar">Par</label>
+        <input type="text" id="fPar" />
+      </div>
+      <div class="form-group">
+        <label for="fYardage">Yardage</label>
+        <input type="text" id="fYardage" />
+      </div>
+      <div class="form-group">
+        <label for="fGreensFee">Greens Fee</label>
+        <input type="text" id="fGreensFee" />
+      </div>
+      <div class="form-group full">
+        <label for="fExcerpt">Excerpt</label>
+        <textarea id="fExcerpt" rows="2"></textarea>
+      </div>
+      <div class="form-group full">
+        <label for="fImageUrl">Photo URL <span style="font-weight:400; color:var(--ink-light)">(optional — paste an Unsplash or direct image link)</span></label>
+        <input type="url" id="fImageUrl" placeholder="https://images.unsplash.com/photo-..." />
+      </div>
+    </div>
+    <div style="margin-top:24px;">
+      <span class="compose-body-label">Full Review *</span>
+      <textarea id="composeBody" style="min-height:320px;"></textarea>
+    </div>
+
+    <div class="meters-editor">
+      <div class="meters-editor-head">
+        <span class="compose-body-label" style="margin:0;">Rating Meters</span>
+        <button type="button" class="btn btn-outline btn-sm" onclick="addMeter()">+ Add Meter</button>
+      </div>
+      <p class="meters-editor-hint">Rate the course 0–100 on specific attributes. Displayed as circular gauges on the published review. The overall score is the average of all meters.</p>
+      <div class="meter-chips">
+        <button type="button" class="meter-chip" onclick="addMeterPreset('Greens')">Greens</button>
+        <button type="button" class="meter-chip" onclick="addMeterPreset('Course Condition')">Course Condition</button>
+        <button type="button" class="meter-chip" onclick="addMeterPreset('Value for Money')">Value for Money</button>
+        <button type="button" class="meter-chip" onclick="addMeterPreset('Pace of Play')">Pace of Play</button>
+        <button type="button" class="meter-chip" onclick="addMeterPreset('Cart / Service')">Cart / Service</button>
+        <button type="button" class="meter-chip" onclick="addMeterPreset('Scenery')">Scenery</button>
+        <button type="button" class="meter-chip" onclick="addMeterPreset('Facilities')">Facilities</button>
+        <button type="button" class="meter-chip" onclick="addMeterPreset('Staff')">Staff</button>
+      </div>
+      <div id="meterList"></div>
+    </div>
+
+    <div style="margin-top:28px; display:flex; gap:10px; flex-wrap:wrap; border-top:1px solid var(--rule); padding-top:18px;">
+      <button class="btn btn-gold" onclick="publishPost()">Publish</button>
+      <button class="btn btn-outline" onclick="saveAsDraft()">Save Draft</button>
+      <button class="btn btn-ghost" onclick="closeCompose()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Login Modal ── -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal-box">
+    <div class="modal-icon">⛳</div>
+    <h2>Admin Login</h2>
+    <p class="sub">Sign in to manage reviews</p>
+    <div id="loginAlert" class="alert"></div>
+    <form class="modal-form" id="loginForm">
+      <div class="form-group">
+        <label for="loginUser">Username</label>
+        <input type="text" id="loginUser" autocomplete="username" required />
+      </div>
+      <div class="form-group">
+        <label for="loginPass">Password</label>
+        <input type="password" id="loginPass" autocomplete="current-password" required />
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%">Sign In</button>
+    </form>
+  </div>
+</div>
+
+<script src="js/app.js"></script>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const postId = parseInt(params.get('id'));
+  let   currentPost = null;
+
+  function loadPost() {
+    const post = getPost(postId);
+    currentPost = post;
+    const el = document.getElementById('postContent');
+
+    if (!post) {
+      el.innerHTML = `<div class="empty-state" style="padding:80px 0"><div class="icon">⛳</div><p>Review not found. <a href="reviews.html">Back to reviews</a></p></div>`;
+      return;
+    }
+
+    document.title = `${post.courseName} Review — The Guide to Pittsburgh Golf`;
+
+    const stats = [
+      { label:'Rating',     val: renderStars(post.rating) },
+      post.par       ? { label:'Par',        val: post.par }       : null,
+      post.yardage   ? { label:'Yardage',    val: post.yardage }   : null,
+      post.difficulty? { label:'Difficulty', val: post.difficulty } : null,
+      post.greensFee ? { label:'Greens Fee', val: post.greensFee } : null,
+      post.type      ? { label:'Type',       val: post.type }      : null,
+    ].filter(Boolean);
+
+    const typeSlug = (post.type||'public').toLowerCase().replace('-','').replace(' ','');
+
+    el.innerHTML = `
+      <a href="reviews.html" class="back-link">← Back to Reviews</a>
+
+      <div class="post-meta-bar">
+        <span class="type-pill-dark">${escapeHtml(post.type||'Course')}</span>
+        <span class="post-date-full">${formatDate(post.dateReviewed)}</span>
+        <span class="post-stars">${renderStars(post.rating)}</span>
+        ${post.status==='draft' ? '<span class="draft-badge">Draft</span>' : ''}
+      </div>
+
+      <h1>${escapeHtml(post.courseName)}</h1>
+      <p class="post-location-sub">${escapeHtml(post.location)}</p>
+      <div class="post-divider"></div>
+
+      ${post.imageUrl ? `<div class="post-hero-img"><img src="${escapeHtml(post.imageUrl)}" alt="${escapeHtml(post.courseName)}" loading="lazy"></div>` : ''}
+
+      ${stats.length ? `
+        <div class="post-stats-bar">
+          ${stats.map(s => `
+            <div class="stat-cell">
+              <div class="stat-label">${escapeHtml(s.label)}</div>
+              <div class="stat-val">${s.val}</div>
+            </div>`).join('')}
+        </div>` : ''}
+
+      ${renderMeters(post.meters)}
+
+      <div class="post-body">${renderBody(post.body)}</div>
+    `;
+
+    updateAdminBar();
+  }
+
+  function updateAdminBar() {
+    const bar = document.getElementById('adminBar');
+    if (isAdminLoggedIn() && currentPost) {
+      bar.classList.add('visible');
+      document.getElementById('toggleBtn').textContent =
+        currentPost.status === 'published' ? 'Unpublish' : 'Publish';
+    } else {
+      bar.classList.remove('visible');
+    }
+  }
+
+  function openEdit() {
+    const p = currentPost; if (!p) return;
+    document.getElementById('composeOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    const f = (id, val) => { const el = document.getElementById(id); if(el) el.value = val||''; };
+    f('editPostId',    p.id);
+    f('fCourseName',   p.courseName);
+    f('fLocation',     p.location);
+    f('fDateReviewed', p.dateReviewed);
+    f('fRating',       p.rating);
+    f('fType',         p.type);
+    f('fDifficulty',   p.difficulty);
+    f('fPar',          p.par);
+    f('fYardage',      p.yardage);
+    f('fGreensFee',    p.greensFee);
+    f('fExcerpt',      p.excerpt);
+    f('fImageUrl',     p.imageUrl);
+    f('composeBody',   p.body);
+    initMeters(p.meters);
+  }
+
+  function closeCompose() {
+    document.getElementById('composeOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function collectForm(status) {
+    const courseName = document.getElementById('fCourseName').value.trim();
+    const body       = document.getElementById('composeBody').value.trim();
+    if (!courseName || !body) { showToast('Course name and review body are required.'); return null; }
+    return {
+      id:           parseInt(document.getElementById('editPostId').value),
+      courseName,
+      location:     document.getElementById('fLocation').value.trim(),
+      dateReviewed: document.getElementById('fDateReviewed').value,
+      rating:       parseInt(document.getElementById('fRating').value) || 3,
+      type:         document.getElementById('fType').value,
+      difficulty:   document.getElementById('fDifficulty').value,
+      par:          document.getElementById('fPar').value.trim(),
+      yardage:      document.getElementById('fYardage').value.trim(),
+      greensFee:    document.getElementById('fGreensFee').value.trim(),
+      excerpt:      document.getElementById('fExcerpt').value.trim(),
+      imageUrl:     document.getElementById('fImageUrl').value.trim(),
+      meters:       collectMeters(),
+      body,
+      status,
+    };
+  }
+
+  function publishPost() {
+    const data = collectForm('published'); if (!data) return;
+    savePost(data); closeCompose(); loadPost();
+    showToast('Review updated and published!');
+  }
+
+  function saveAsDraft() {
+    const data = collectForm('draft'); if (!data) return;
+    savePost(data); closeCompose(); loadPost();
+    showToast('Draft saved.');
+  }
+
+  function togglePublish() {
+    if (!currentPost) return;
+    const newStatus = currentPost.status === 'published' ? 'draft' : 'published';
+    savePost({ ...currentPost, status: newStatus });
+    currentPost.status = newStatus;
+    loadPost();
+    showToast(newStatus === 'published' ? 'Published.' : 'Moved to draft.');
+  }
+
+  function handleDelete() {
+    if (!confirm('Delete this review permanently?')) return;
+    deletePost(postId);
+    window.location.href = 'reviews.html';
+  }
+
+  // ── Meter editor ──
+  let meters = [];
+  function initMeters(data) {
+    meters = data ? data.map(m => ({...m})) : [];
+    renderMeterList();
+  }
+  function renderMeterList() {
+    const list = document.getElementById('meterList');
+    if (!list) return;
+    if (!meters.length) {
+      list.innerHTML = '<p class="meters-empty">No meters yet — tap a preset above or click "+ Add Meter".</p>';
+      return;
+    }
+    list.innerHTML = meters.map((m, i) => `
+      <div class="meter-editor-row">
+        <div class="meter-editor-gauge">${renderMeterSVG(m.value)}</div>
+        <div class="meter-editor-controls">
+          <input type="text" class="meter-label-inp" value="${escapeHtml(m.label)}" placeholder="Label"
+                 oninput="meters[${i}].label=this.value" />
+          <div class="meter-range-wrap">
+            <input type="range" min="0" max="100" value="${m.value}" class="meter-range-inp"
+                   oninput="meters[${i}].value=+this.value;
+                     this.closest('.meter-editor-row').querySelector('.meter-num-inp').value=this.value;
+                     this.closest('.meter-editor-row').querySelector('.meter-editor-gauge').innerHTML=renderMeterSVG(+this.value);" />
+            <input type="number" min="0" max="100" value="${m.value}" class="meter-num-inp"
+                   oninput="const vv=Math.max(0,Math.min(100,+this.value||0));meters[${i}].value=vv;
+                     this.closest('.meter-editor-row').querySelector('.meter-range-inp').value=vv;
+                     this.closest('.meter-editor-row').querySelector('.meter-editor-gauge').innerHTML=renderMeterSVG(vv);" />
+          </div>
+        </div>
+        <button type="button" class="btn btn-xs btn-danger" onclick="removeMeter(${i})">✕</button>
+      </div>`).join('');
+  }
+  function addMeter(label='Custom', value=75) {
+    meters.push({ label, value });
+    renderMeterList();
+  }
+  function addMeterPreset(label) {
+    if (meters.find(m => m.label === label)) { showToast(`"${label}" already added.`); return; }
+    addMeter(label, 75);
+  }
+  function removeMeter(i) { meters.splice(i,1); renderMeterList(); }
+  function collectMeters() {
+    return meters.map(m => ({ label:(m.label||'').trim()||'Rating', value:Math.max(0,Math.min(100,+m.value||0)) }));
+  }
+
+  function onAdminStateChange() { updateAdminBar(); }
+
+  document.addEventListener('DOMContentLoaded', loadPost);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCompose(); });
+</script>
+</body>
+</html>
