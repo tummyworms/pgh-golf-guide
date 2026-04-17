@@ -3,24 +3,18 @@
    ============================================= */
 
 // ── Admin Auth ──────────────────────────────────
-const ADMIN_USER      = 'twb2113';
-const ADMIN_PASS_HASH = '4dbce013b3dc4bdb7b7e0ce2818363fd9318e802a59e4ec4007ef41e0b9e0f5c';
-const SESSION_KEY     = 'pgolf_admin';
+function isAdminLoggedIn() { return !!auth.currentUser; }
 
-async function sha256(str) {
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
-  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
-}
-
-function isAdminLoggedIn() { return sessionStorage.getItem(SESSION_KEY) === 'true'; }
-async function adminLogin(u, p) {
-  const hash = await sha256(p);
-  if (u === ADMIN_USER && hash === ADMIN_PASS_HASH) {
-    sessionStorage.setItem(SESSION_KEY, 'true'); return true;
+async function adminLogin(email, password) {
+  try {
+    await auth.signInWithEmailAndPassword(email, password);
+    return true;
+  } catch (e) {
+    return false;
   }
-  return false;
 }
-function adminLogout() { sessionStorage.removeItem(SESSION_KEY); }
+
+async function adminLogout() { await auth.signOut(); }
 
 // ── Course directory (~60-mile radius of Pittsburgh) ──
 const DEFAULT_COURSES = [
@@ -197,10 +191,9 @@ function updateAdminNav() {
   if (!btn) return;
   if (isAdminLoggedIn()) {
     btn.textContent = 'admin ·';
-    btn.onclick = (e) => {
+    btn.onclick = async (e) => {
       e.preventDefault();
-      adminLogout(); updateAdminNav();
-      if (typeof onAdminStateChange === 'function') onAdminStateChange(false);
+      await adminLogout();
       showToast('Logged out.');
     };
   } else {
@@ -224,16 +217,15 @@ function closeLoginModal() {
 }
 async function handleLoginSubmit(e) {
   e.preventDefault();
-  const u = document.getElementById('loginUser').value.trim();
-  const p = document.getElementById('loginPass').value;
-  const a = document.getElementById('loginAlert');
-  if (await adminLogin(u, p)) {
-    closeLoginModal(); updateAdminNav();
-    if (typeof onAdminStateChange === 'function') onAdminStateChange(true);
+  const email = document.getElementById('loginUser').value.trim();
+  const pass  = document.getElementById('loginPass').value;
+  const alert = document.getElementById('loginAlert');
+  if (await adminLogin(email, pass)) {
+    closeLoginModal();
     showToast('Welcome back!');
   } else {
-    a.className = 'alert error';
-    a.textContent = 'Incorrect username or password.';
+    alert.className = 'alert error';
+    alert.textContent = 'Incorrect email or password.';
   }
 }
 
@@ -241,7 +233,10 @@ async function handleLoginSubmit(e) {
 document.addEventListener('DOMContentLoaded', () => {
   seedCoursesIfEmpty();
   setActiveNav();
-  updateAdminNav();
+  auth.onAuthStateChanged(user => {
+    updateAdminNav();
+    if (typeof onAdminStateChange === 'function') onAdminStateChange(!!user);
+  });
   document.getElementById('loginModal')?.addEventListener('click', e => { if (e.target.id==='loginModal') closeLoginModal(); });
   document.getElementById('loginForm')?.addEventListener('submit', handleLoginSubmit);
 
