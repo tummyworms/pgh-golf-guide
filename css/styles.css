@@ -84,7 +84,7 @@ h1,h2,h3,h4 { font-family: var(--serif); line-height: 1.2; }
   max-width: 1160px;
   margin: 0 auto;
   padding: 0 24px;
-  height: 68px;
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -102,15 +102,15 @@ h1,h2,h3,h4 { font-family: var(--serif); line-height: 1.2; }
   font-family: var(--serif);
   font-style: italic;
   color: var(--gold-light);
-  font-size: 1.08rem;
+  font-size: 0.95rem;
   letter-spacing: 0.2px;
   line-height: 1.1;
 }
 .logo-tagline {
   font-family: var(--sans);
-  font-size: 0.62rem;
+  font-size: 0.58rem;
   color: rgba(255,255,255,0.42);
-  letter-spacing: 1.8px;
+  letter-spacing: 1.6px;
   text-transform: uppercase;
 }
 
@@ -155,25 +155,22 @@ h1,h2,h3,h4 { font-family: var(--serif); line-height: 1.2; }
 .home-hero {
   background: var(--green-dark);
   background-image:
-    repeating-linear-gradient(
-      -55deg,
-      transparent,
-      transparent 24px,
-      rgba(255,255,255,0.018) 24px,
-      rgba(255,255,255,0.018) 25px
-    );
+    linear-gradient(rgba(14,33,24,0.60), rgba(8,22,14,0.76)),
+    url('https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=1600&q=80&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center 35%;
   padding: 88px 24px 116px;
   text-align: center;
   position: relative;
   overflow: hidden;
 }
 
-/* Radial green glow for depth */
+/* Subtle vignette overlay */
 .home-hero::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 70% 80% at 50% 20%, rgba(30,107,58,0.35) 0%, transparent 70%);
+  background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(8,22,14,0.45) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -232,13 +229,10 @@ h1,h2,h3,h4 { font-family: var(--serif); line-height: 1.2; }
 .page-banner {
   background: var(--green-dark);
   background-image:
-    repeating-linear-gradient(
-      -55deg,
-      transparent,
-      transparent 24px,
-      rgba(255,255,255,0.018) 24px,
-      rgba(255,255,255,0.018) 25px
-    );
+    linear-gradient(rgba(14,33,24,0.66), rgba(8,22,14,0.80)),
+    url('https://images.unsplash.com/photo-1592919505780-303950717480?w=1600&q=80&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center 40%;
   padding: 72px 24px 64px;
   text-align: center;
   border-bottom: 2px solid var(--gold);
@@ -657,6 +651,62 @@ textarea { resize: vertical; }
 .btn-xs { padding: 4px 10px; font-size: 0.72rem; }
 
 /* ── Sponsors section ── */
+/* ── Photo strip ── */
+.photo-strip {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr 1fr;
+  height: 280px;
+  overflow: hidden;
+}
+.photo-strip-img {
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.86) contrast(1.05) saturate(1.14) sepia(0.10);
+  transition: filter 0.35s ease, transform 0.35s ease;
+  overflow: hidden;
+}
+.photo-strip-img:hover {
+  filter: brightness(0.94) contrast(1.03) saturate(1.18) sepia(0.07);
+  transform: scale(1.02);
+}
+
+/* ── Photo upload UI ── */
+.photo-upload-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.photo-upload-group input[type="url"] {
+  flex: 1;
+  min-width: 200px;
+}
+.photo-upload-or {
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  color: var(--ink-light);
+  flex-shrink: 0;
+}
+.photo-upload-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.photo-preview {
+  width: 100%;
+  margin-top: 8px;
+}
+.photo-preview img {
+  height: 80px;
+  width: auto;
+  border-radius: var(--radius);
+  border: 1.5px solid var(--rule);
+  filter: brightness(0.88) contrast(1.05) saturate(1.14) sepia(0.10);
+}
+
+/* ── Sponsors section ── */
 .sponsors-section {
   padding: 60px 24px;
   background: var(--sand);
@@ -1064,7 +1114,7 @@ footer {
   width: 100%;
   height: 420px;
   object-fit: cover;
-  filter: brightness(0.88) contrast(1.08) saturate(1.12);
+  filter: brightness(0.88) contrast(1.05) saturate(1.14) sepia(0.10);
 }
 
 /* ── Card thumbnail image ── */
@@ -1075,7 +1125,7 @@ footer {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: brightness(0.82) contrast(1.08) saturate(1.15);
+  filter: brightness(0.82) contrast(1.05) saturate(1.14) sepia(0.10);
 }
 .post-card-thumb .card-type,
 .post-card-thumb .card-rating { position: relative; z-index: 1; }
