@@ -448,16 +448,19 @@
     return meters.map(m => ({ label:(m.label||'').trim()||'Rating', value:Math.max(0,Math.min(100,+m.value||0)) }));
   }
 
-  function handlePhotoUpload(input) {
+  async function handlePhotoUpload(input) {
     const file = input.files[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = e => {
-      document.getElementById('fImageUrl').value = e.target.result;
-      const preview = document.getElementById('photoPreview');
-      preview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
-    };
-    reader.readAsDataURL(file);
+    const preview = document.getElementById('photoPreview');
+    preview.innerHTML = '<p style="font-size:0.85rem;color:var(--ink-mid);font-family:var(--sans);">Uploading…</p>';
+    try {
+      const url = await uploadPhoto(file);
+      document.getElementById('fImageUrl').value = url;
+      preview.innerHTML = `<img src="${escapeHtml(url)}" alt="Preview">`;
+    } catch (e) {
+      preview.innerHTML = '';
+      showToast('Upload failed. Try pasting a URL instead.');
+    }
   }
 
   function onAdminStateChange() { render(); }

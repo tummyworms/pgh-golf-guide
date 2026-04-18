@@ -121,6 +121,20 @@ function formatDate(iso) {
   return d.toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
 }
 
+// ── Cloudinary upload ─────────────────────────────
+async function uploadPhoto(file) {
+  const form = new FormData();
+  form.append('file', file);
+  form.append('upload_preset', 'golf-guide');
+  const res = await fetch('https://api.cloudinary.com/v1_1/domcctbfc/image/upload', {
+    method: 'POST',
+    body: form,
+  });
+  if (!res.ok) throw new Error('Upload failed');
+  const data = await res.json();
+  return data.secure_url;
+}
+
 // Turn plain textarea text into <p> tags
 function renderBody(text) {
   if (!text) return '';
