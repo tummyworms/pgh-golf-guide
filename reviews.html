@@ -47,6 +47,7 @@
       <button class="filter-btn active" data-filter="all">All</button>
       <button class="filter-btn" data-filter="Public">Public</button>
       <button class="filter-btn" data-filter="Private">Private</button>
+      <button class="filter-btn" data-filter="simulator">Indoor Simulator</button>
       <span id="postCount" style="margin-left:auto; font-size:0.82rem; color:var(--ink-light); font-family:var(--sans);"></span>
     </div>
     <div class="post-grid" id="postGrid"></div>
@@ -174,6 +175,12 @@
           <span class="cotw-check-text">🏆 Course of the Week</span>
         </label>
       </div>
+      <div class="form-group full">
+        <label class="cotw-check-label">
+          <input type="checkbox" id="fIndoorSimulator" />
+          <span class="cotw-check-text">🕹️ Indoor Simulator</span>
+        </label>
+      </div>
     </div>
     <div style="margin-top:24px;">
       <span class="compose-body-label">Full Review *</span>
@@ -243,7 +250,8 @@
     let   all       = [..._allPosts];
     if (!admin || !showDraft) all = all.filter(p => p.status === 'published');
     if (activeFilter === 'Public')  all = all.filter(p => p.type === 'Public');
-    if (activeFilter === 'Private') all = all.filter(p => p.type === 'Private');
+    if (activeFilter === 'Private')    all = all.filter(p => p.type === 'Private');
+    if (activeFilter === 'simulator')  all = all.filter(p => p.indoorSimulator);
     all = all.sort((a,b) => {
       if (a.courseOfWeek && !b.courseOfWeek) return -1;
       if (!a.courseOfWeek && b.courseOfWeek) return 1;
@@ -325,6 +333,8 @@
     if (preview) preview.innerHTML = post?.imageUrl ? `<img src="${escapeHtml(post.imageUrl)}" alt="Current photo">` : '';
     const cotw = document.getElementById('fCourseOfWeek');
     if (cotw) cotw.checked = !!(post?.courseOfWeek);
+    const sim = document.getElementById('fIndoorSimulator');
+    if (sim) sim.checked = !!(post?.indoorSimulator);
     initMeters(post?.meters);
   }
 
@@ -357,8 +367,9 @@
       greensFee:    document.getElementById('fGreensFee').value.trim(),
       excerpt:      document.getElementById('fExcerpt').value.trim(),
       imageUrl:     document.getElementById('fImageUrl').value.trim(),
-      courseOfWeek: document.getElementById('fCourseOfWeek').checked,
-      meters:       collectMeters(),
+      courseOfWeek:     document.getElementById('fCourseOfWeek').checked,
+      indoorSimulator:  document.getElementById('fIndoorSimulator').checked,
+      meters:           collectMeters(),
       body,
       status,
     };

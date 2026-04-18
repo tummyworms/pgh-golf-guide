@@ -155,6 +155,12 @@
           <span class="cotw-check-text">🏆 Course of the Week</span>
         </label>
       </div>
+      <div class="form-group full">
+        <label class="cotw-check-label">
+          <input type="checkbox" id="fIndoorSimulator" />
+          <span class="cotw-check-text">🕹️ Indoor Simulator</span>
+        </label>
+      </div>
     </div>
     <div style="margin-top:24px;">
       <span class="compose-body-label">Full Review *</span>
@@ -316,6 +322,8 @@
     if (preview) preview.innerHTML = p.imageUrl ? `<img src="${escapeHtml(p.imageUrl)}" alt="Current photo">` : '';
     const cotw = document.getElementById('fCourseOfWeek');
     if (cotw) cotw.checked = !!(p.courseOfWeek);
+    const sim = document.getElementById('fIndoorSimulator');
+    if (sim) sim.checked = !!(p.indoorSimulator);
     initMeters(p.meters);
   }
 
@@ -341,8 +349,9 @@
       greensFee:    document.getElementById('fGreensFee').value.trim(),
       excerpt:      document.getElementById('fExcerpt').value.trim(),
       imageUrl:     document.getElementById('fImageUrl').value.trim(),
-      courseOfWeek: document.getElementById('fCourseOfWeek').checked,
-      meters:       collectMeters(),
+      courseOfWeek:    document.getElementById('fCourseOfWeek').checked,
+      indoorSimulator: document.getElementById('fIndoorSimulator').checked,
+      meters:          collectMeters(),
       body,
       status,
     };
