@@ -775,8 +775,8 @@ textarea { resize: vertical; }
 }
 .sponsor-slot::before { content: '+'; font-size: 1.1rem; color: var(--rule); }
 .sponsor-slot-logo::before { display: none; }
-.sponsor-slot-logo { cursor: pointer; }
-.sponsor-logo-img { max-height: 58px; max-width: 148px; width: auto; height: auto; object-fit: contain; display: block; }
+.sponsor-slot-logo { cursor: pointer; overflow: hidden; }
+.sponsor-logo-img { height: 58px; width: auto; display: block; }
 .sponsor-slot:hover {
   border-color: var(--gold);
   box-shadow: 0 4px 16px rgba(200,144,10,0.15);
