@@ -1071,22 +1071,15 @@ textarea { resize: vertical; }
   gap: 60px;
 }
 .newsletter-text { flex: 1.1; }
-.newsletter-eyebrow {
-  font-family: var(--sans);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 10px;
-}
 .newsletter-text h2 {
   font-family: var(--serif);
-  font-size: 2.2rem;
+  font-style: italic;
+  font-size: 2.6rem;
   font-weight: 700;
   color: var(--gold-light);
+  letter-spacing: 0.2px;
   margin: 0 0 14px;
-  line-height: 1.15;
+  line-height: 1.1;
 }
 .newsletter-text p {
   font-family: var(--sans);
