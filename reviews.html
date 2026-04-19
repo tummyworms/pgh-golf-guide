@@ -386,18 +386,14 @@
   function notifySubscribers(review) {
     const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzeFKLrqm89xwk382lhSMrIjvO-quEq3e8s0U4KF9pMXqza1M61Yn4X6qy2xXmuB-gA/exec';
     if (!APPS_SCRIPT_URL.startsWith('https://script')) return;
-    var params = new URLSearchParams();
-    params.append('action', 'notify');
-    params.append('courseName', review.courseName);
-    params.append('excerpt', review.excerpt || '');
-    params.append('body', review.body || '');
-    params.append('rating', review.rating || 0);
-    params.append('id', review.id);
-    fetch(APPS_SCRIPT_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      body: params,
-    }).catch(() => {});
+    var url = APPS_SCRIPT_URL
+      + '?action=notify'
+      + '&courseName=' + encodeURIComponent(review.courseName)
+      + '&excerpt='    + encodeURIComponent(review.excerpt || '')
+      + '&body='       + encodeURIComponent((review.body || '').slice(0, 1500))
+      + '&rating='     + (review.rating || 0)
+      + '&id='         + review.id;
+    fetch(url, { mode: 'no-cors' }).catch(() => {});
   }
 
   async function saveAsDraft() {
