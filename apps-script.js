@@ -57,11 +57,13 @@ function sendCampaign(review) {
     payload: JSON.stringify({
       name: 'Review: ' + courseName,
       type: 'regular',
-      subject: 'New Review: ' + courseName,
-      from: Session.getEffectiveUser().getEmail(),
-      from_name: 'Pittsburgh Golf Guide',
       groups: [groupId],
-      content: { html: html }
+      emails: [{
+        subject: 'New Review: ' + courseName,
+        from: Session.getEffectiveUser().getEmail(),
+        from_name: 'Pittsburgh Golf Guide',
+        content: { html: html }
+      }]
     })
   });
 
