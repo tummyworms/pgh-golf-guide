@@ -77,33 +77,41 @@
 <div class="newsletter-section">
   <div class="newsletter-inner">
     <div class="newsletter-text">
+      <div class="newsletter-eyebrow">Free Newsletter</div>
       <h2>Stay in the Loop</h2>
       <p>Get every new review delivered straight to your inbox — before you book your next tee time.</p>
     </div>
-    <div class="newsletter-form ml-subscribe-form ml-subscribe-form-40111578" id="mlb2-40111578">
-      <form class="ml-block-form row-form" action="https://assets.mailerlite.com/jsonp/2277840/forms/185155151393195356/subscribe" data-code="" method="post" target="_blank">
-        <div class="newsletter-fields">
-          <input aria-label="email" aria-required="true" type="email" name="fields[email]" placeholder="Your email address" autocomplete="email" class="newsletter-input" />
-          <input type="hidden" name="ml-submit" value="1">
-          <input type="hidden" name="anticsrf" value="true">
-          <button type="submit" class="newsletter-btn">Get New Reviews ⛳</button>
-        </div>
+    <div class="newsletter-form">
+      <form id="newsletterForm" class="newsletter-fields" novalidate>
+        <input id="newsletterEmail" type="email" placeholder="Your email address" autocomplete="email" class="newsletter-input" required />
+        <button type="submit" class="newsletter-btn">Get New Reviews ⛳</button>
       </form>
-      <div class="row-success" style="display:none">
-        <p class="newsletter-success">You're in! We'll send you the next review. ⛳</p>
-      </div>
+      <p id="newsletterSuccess" class="newsletter-success" style="display:none">You're in! Next review goes straight to your inbox. ⛳</p>
+      <p id="newsletterError" class="newsletter-error" style="display:none">Something went wrong — please try again.</p>
     </div>
   </div>
 </div>
-<script src="https://groot.mailerlite.com/js/w/webforms.min.js?v95037e5bac78f29ed026832ca21a7c7b" type="text/javascript"></script>
 <script>
-  function ml_webform_success_40111578() {
-    var $ = ml_jQuery || jQuery;
-    $('.ml-subscribe-form-40111578 .row-success').show();
-    $('.ml-subscribe-form-40111578 .row-form').hide();
-  }
+  document.getElementById('newsletterForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var email = document.getElementById('newsletterEmail').value.trim();
+    if (!email) return;
+    var formData = new FormData();
+    formData.append('fields[email]', email);
+    formData.append('ml-submit', '1');
+    formData.append('anticsrf', 'true');
+    fetch('https://assets.mailerlite.com/jsonp/2277840/forms/185155151393195356/subscribe', {
+      method: 'POST',
+      body: formData,
+      mode: 'no-cors'
+    }).then(function() {
+      document.getElementById('newsletterForm').style.display = 'none';
+      document.getElementById('newsletterSuccess').style.display = 'block';
+    }).catch(function() {
+      document.getElementById('newsletterError').style.display = 'block';
+    });
+  });
 </script>
-<script>fetch("https://assets.mailerlite.com/jsonp/2277840/forms/185155151393195356/takel")</script>
 
 <!-- ── Footer ── -->
 <footer>
