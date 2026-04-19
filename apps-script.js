@@ -1,6 +1,6 @@
 var SITE_URL = 'https://golf-guide-ef34e.web.app';
 
-function doPost(e) {
+function doGet(e) {
   var action = e.parameter.action;
   if (action === 'notify') {
     var review = {
@@ -28,9 +28,7 @@ function sendCampaign(review) {
     { headers: headers }
   );
   var groups = JSON.parse(groupsRes.getContentText()).data;
-  if (!groups || groups.length === 0) {
-    return;
-  }
+  if (!groups || groups.length === 0) return;
   var groupId = groups[0].id;
 
   var courseName = review.courseName;
@@ -60,7 +58,7 @@ function sendCampaign(review) {
       name: 'Review: ' + courseName,
       type: 'regular',
       subject: 'New Review: ' + courseName,
-      from: Session.getActiveUser().getEmail(),
+      from: Session.getEffectiveUser().getEmail(),
       from_name: 'Pittsburgh Golf Guide',
       groups: [groupId],
       content: { html: html }
