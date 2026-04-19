@@ -359,8 +359,18 @@
 
   async function publishPost() {
     const data = collectForm('published'); if (!data) return;
-    await savePost(data); closeCompose(); await loadPost();
+    const id = await savePost(data); closeCompose(); await loadPost();
     showToast('Review updated and published!');
+    notifySubscribers({ ...data, id });
+  }
+
+  function notifySubscribers(review) {
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzeFKLrqm89xwk382lhSMrIjvO-quEq3e8s0U4KF9pMXqza1M61Yn4X6qy2xXmuB-gA/exec';
+    if (!APPS_SCRIPT_URL.startsWith('https://script')) return;
+    fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'notify', review }),
+    }).catch(() => {});
   }
 
   async function saveAsDraft() {
