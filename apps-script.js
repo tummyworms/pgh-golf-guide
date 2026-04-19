@@ -62,7 +62,7 @@ function sendCampaign(review) {
         subject: 'New Review: ' + courseName,
         from: Session.getEffectiveUser().getEmail(),
         from_name: 'Pittsburgh Golf Guide',
-        content: { html: html }
+        content: html
       }]
     })
   });
