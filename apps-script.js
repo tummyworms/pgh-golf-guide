@@ -1,9 +1,16 @@
 var SITE_URL = 'https://golf-guide-ef34e.web.app';
 
 function doPost(e) {
-  var data = JSON.parse(e.postData.contents);
-  if (data.action === 'notify') {
-    sendCampaign(data.review);
+  var action = e.parameter.action;
+  if (action === 'notify') {
+    var review = {
+      courseName: e.parameter.courseName,
+      excerpt:    e.parameter.excerpt,
+      body:       e.parameter.body,
+      rating:     parseInt(e.parameter.rating) || 0,
+      id:         e.parameter.id,
+    };
+    sendCampaign(review);
   }
   return ContentService.createTextOutput('ok');
 }
