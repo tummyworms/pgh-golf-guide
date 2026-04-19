@@ -16,7 +16,9 @@ function doGet(e) {
 }
 
 function sendCampaign(review) {
-  var apiKey = PropertiesService.getScriptProperties().getProperty('MAILERLITE_API_KEY');
+  var props  = PropertiesService.getScriptProperties();
+  var apiKey = props.getProperty('MAILERLITE_API_KEY');
+  var fromEmail = props.getProperty('SENDER_EMAIL') || Session.getEffectiveUser().getEmail();
 
   var headers = {
     'Authorization': 'Bearer ' + apiKey,
@@ -28,7 +30,10 @@ function sendCampaign(review) {
     { headers: headers }
   );
   var groups = JSON.parse(groupsRes.getContentText()).data;
-  if (!groups || groups.length === 0) return;
+  if (!groups || groups.length === 0) {
+    Logger.log('No groups found');
+    return;
+  }
   var groupId = groups[0].id;
 
   var courseName = review.courseName;
@@ -51,26 +56,45 @@ function sendCampaign(review) {
     + '<a href="' + reviewUrl + '" style="background:#c8900a;color:#fff;padding:12px 24px;text-decoration:none;border-radius:4px;font-weight:bold">Read the Full Review</a>'
     + '</div>';
 
+  var createPayload = {
+    name: 'Review: ' + courseName,
+    type: 'regular',
+    groups: [groupId],
+    emails: [{
+      subject: 'New Review: ' + courseName,
+      from: fromEmail,
+      from_name: 'Pittsburgh Golf Guide',
+      content: html
+    }]
+  };
+
   var createRes = UrlFetchApp.fetch('https://connect.mailerlite.com/api/campaigns', {
     method: 'post',
     headers: headers,
-    payload: JSON.stringify({
-      name: 'Review: ' + courseName,
-      type: 'regular',
-      groups: [groupId],
-      emails: [{
-        subject: 'New Review: ' + courseName,
-        from: Session.getEffectiveUser().getEmail(),
-        from_name: 'Pittsburgh Golf Guide',
-        content: html
-      }]
-    })
+    payload: JSON.stringify(createPayload),
+    muteHttpExceptions: true
   });
 
-  var campaignId = JSON.parse(createRes.getContentText()).data.id;
+  Logger.log('Create status: ' + createRes.getResponseCode());
+  Logger.log('Create body: ' + createRes.getContentText());
 
-  UrlFetchApp.fetch(
+  var createData = JSON.parse(createRes.getContentText());
+  if (!createData.data || !createData.data.id) {
+    Logger.log('Campaign creation failed');
+    return;
+  }
+  var campaignId = createData.data.id;
+
+  var scheduleRes = UrlFetchApp.fetch(
     'https://connect.mailerlite.com/api/campaigns/' + campaignId + '/schedule',
-    { method: 'post', headers: headers, payload: JSON.stringify({ delivery: 'instant' }) }
+    {
+      method: 'post',
+      headers: headers,
+      payload: JSON.stringify({ delivery: 'instant' }),
+      muteHttpExceptions: true
+    }
   );
+
+  Logger.log('Schedule status: ' + scheduleRes.getResponseCode());
+  Logger.log('Schedule body: ' + scheduleRes.getContentText());
 }
