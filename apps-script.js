@@ -70,7 +70,7 @@ function sendCampaign(review) {
   var campaignId = JSON.parse(createRes.getContentText()).data.id;
 
   UrlFetchApp.fetch(
-    'https://connect.mailerlite.com/api/campaigns/' + campaignId + '/actions/send',
-    { method: 'post', headers: headers, payload: '{}' }
+    'https://connect.mailerlite.com/api/campaigns/' + campaignId + '/schedule',
+    { method: 'post', headers: headers, payload: JSON.stringify({ delivery: 'instant' }) }
   );
 }
