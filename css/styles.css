@@ -331,9 +331,19 @@ hr {
 @media (max-width: 50em) {
   .site-header__grid {
     grid-template-columns: 1fr;
+    gap: 0;
   }
   .site-header__tagline {
     display: none;
+  }
+  .site-header__logo-col {
+    padding-inline-start: 0;
+  }
+  .site-header__wrap {
+    padding-block: var(--space-2xs) 0;
+  }
+  .site-logo__img {
+    width: clamp(160px, 45vw, 260px);
   }
 }
 
@@ -1407,8 +1417,10 @@ textarea { resize: vertical; }
   font-size: 0.9rem; padding: 8px 0;
 }
 @media (max-width: 44em) {
-  .newsletter-inner { flex-direction: column; gap: var(--space-l); }
-  .newsletter-text h2 { font-size: 1.8rem; }
+  .newsletter-section { padding-block: var(--space-l) var(--space-m); }
+  .newsletter-inner { flex-direction: column; gap: var(--space-m); }
+  .newsletter-text h2 { font-size: 1.5rem; }
+  .newsletter-text p { font-size: 0.88rem; }
 }
 
 /* ─── Footer ───────────────────────────────────────────── */
@@ -1686,7 +1698,8 @@ footer {
   .photo-strip-img { height: 160px; }
   .post-grid { grid-template-columns: 1fr; }
   .shop-grid { grid-template-columns: repeat(2, 1fr); }
-  .footer-top { grid-template-columns: 1fr; gap: var(--space-l); }
+  .footer-top { grid-template-columns: 1fr; gap: var(--space-m); padding: var(--space-m) var(--gutter) var(--space-l); }
+  footer { padding-block-start: 0; }
   .post-stats-bar { grid-template-columns: repeat(2, 1fr); }
   .course-controls { flex-direction: column; align-items: stretch; }
   .course-search { max-width: none; }
