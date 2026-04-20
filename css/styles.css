@@ -8,6 +8,14 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Rosart:ital,wght@0,400;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,700;0,9..40,900;1,9..40,400&display=swap');
 
+@font-face {
+  font-family: 'Family';
+  src: url('https://piccalil.li/fonts/family-bold-subset.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ─── Design tokens ───────────────────────────────────── */
 :root {
   /* Piccalilli palette */
@@ -168,12 +176,13 @@ hr {
   border-radius: 6px;
 }
 .logo-name {
-  font-family: var(--font-display);
-  font-weight: 900;
-  font-size: clamp(1.1rem, 0.9rem + 1vi, 1.9rem);
-  letter-spacing: -0.03em;
-  line-height: 1.1;
+  font-family: 'Family', var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.4rem, 1rem + 1.5vi, 2.4rem);
+  letter-spacing: -0.01em;
+  line-height: 1.05;
   display: block;
+  text-transform: lowercase;
 }
 .logo-tagline { display: none; } /* hidden – tagline is in .site-header__tagline */
 
@@ -1319,12 +1328,12 @@ footer {
   display: flex;
   align-items: center;
   gap: var(--space-s);
-  font-family: var(--font-display);
-  font-weight: 900;
-  letter-spacing: -0.02em;
+  font-family: 'Family', var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.01em;
   color: var(--color-primary);
-  font-size: 1.05rem;
-  display: block;
+  font-size: 1.4rem;
+  text-transform: lowercase;
   margin-bottom: var(--space-s);
   text-decoration: none;
 }
