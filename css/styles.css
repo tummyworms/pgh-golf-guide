@@ -189,14 +189,14 @@ hr {
   max-width: var(--wrapper-max);
   margin-inline: auto;
   padding-inline: var(--gutter);
-  padding-block: var(--space-s) 0;
+  padding-block: var(--space-xs) 0;
 }
 
 .site-header__grid {
   display: grid;
   grid-template-columns: max-content 1fr;
   align-items: center;
-  gap: var(--space-m);
+  gap: var(--space-l);
 }
 
 .site-header__logo-col {
@@ -221,17 +221,45 @@ hr {
 
 .site-header__tagline {
   padding-block: var(--space-xs);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  justify-content: center;
+  border-inline-start: 1px solid rgba(255,255,255,0.12);
+  padding-inline-start: var(--space-l);
 }
-.site-header__tagline p {
+.site-header__tagline-lead {
   font-family: var(--font-base);
-  font-size: clamp(0.85rem, 0.82rem + 0.2vi, 1rem);
+  font-size: clamp(0.9rem, 0.85rem + 0.25vi, 1.05rem);
   line-height: 1.5;
-  color: rgba(237,236,229,0.6);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  color: rgba(237,236,229,0.75);
+  max-width: 48ch;
 }
-.site-header__tagline em { font-style: italic; color: var(--color-light); }
+.site-header__tagline-lead em { font-style: italic; color: var(--color-primary); }
+
+.site-header__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px var(--space-m);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.site-header__meta li {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: rgba(237,236,229,0.4);
+  position: relative;
+}
+.site-header__meta li + li::before {
+  content: '·';
+  margin-inline-end: var(--space-m);
+  color: var(--color-primary);
+  opacity: 0.5;
+}
 
 .site-header__rule {
   margin-block: var(--space-xs) 0;
@@ -243,7 +271,7 @@ hr {
   align-items: center;
   justify-content: space-between;
   gap: var(--space-s);
-  padding-block: 6px;
+  padding-block: 5px 8px;
 }
 
 /* Nav list */
@@ -294,7 +322,7 @@ hr {
 .nav-toggle:hover { background: var(--color-primary); color: var(--color-dark); border-color: var(--color-primary); }
 
 /* Collapse tagline on small screens */
-@media (max-width: 36em) {
+@media (max-width: 50em) {
   .site-header__grid {
     grid-template-columns: 1fr;
   }
