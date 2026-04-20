@@ -141,6 +141,8 @@ hr {
 .site-header {
   position: relative;
   z-index: 100;
+  background: var(--color-dark);
+  color: var(--color-light);
   padding-block-start: var(--space-s);
 }
 
@@ -168,11 +170,11 @@ hr {
   color: inherit;
 }
 .site-logo__img {
-  width: clamp(160px, 14vw, 240px);
+  width: clamp(220px, 20vw, 360px);
   height: auto;
   object-fit: contain;
   flex-shrink: 0;
-  mix-blend-mode: multiply;
+  mix-blend-mode: screen;
 }
 .logo-name { display: none; }
 .logo-tagline { display: none; }
@@ -184,15 +186,16 @@ hr {
   font-family: var(--font-base);
   font-size: clamp(0.85rem, 0.82rem + 0.2vi, 1rem);
   line-height: 1.5;
-  color: var(--color-mid);
+  color: rgba(237,236,229,0.6);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.site-header__tagline em { font-style: italic; color: var(--color-dark); }
+.site-header__tagline em { font-style: italic; color: var(--color-light); }
 
 .site-header__rule {
   margin-block: var(--space-xs) 0;
+  border-block-start-color: rgba(255,255,255,0.12);
 }
 
 .site-header__nav-row {
@@ -216,7 +219,7 @@ hr {
   font-family: var(--font-display);
   font-size: clamp(0.85rem, 0.82rem + 0.15vi, 1rem);
   font-weight: 700;
-  color: inherit;
+  color: var(--color-light);
   text-decoration: none;
   line-height: 1.2;
 }
@@ -227,6 +230,7 @@ hr {
 }
 .nav-links a.active {
   background: var(--color-primary);
+  color: var(--color-dark);
   padding-inline: 0.2em;
 }
 
@@ -234,7 +238,7 @@ hr {
 .nav-toggle {
   display: none;
   background: none;
-  border: 1px solid var(--color-dark);
+  border: 1px solid rgba(255,255,255,0.3);
   border-radius: var(--radius);
   font-family: var(--font-display);
   font-size: 0.8rem;
@@ -243,11 +247,11 @@ hr {
   text-transform: uppercase;
   padding: 6px 12px;
   cursor: pointer;
-  color: var(--color-dark);
+  color: var(--color-light);
   transition: var(--ease);
   flex-shrink: 0;
 }
-.nav-toggle:hover { background: var(--color-dark); color: var(--color-light); }
+.nav-toggle:hover { background: var(--color-primary); color: var(--color-dark); border-color: var(--color-primary); }
 
 /* Collapse tagline on small screens */
 @media (max-width: 36em) {
