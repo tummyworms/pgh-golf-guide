@@ -220,10 +220,10 @@ hr {
 .logo-tagline { display: none; }
 
 .site-header__tagline {
-  padding-block: var(--space-m);
+  padding-block: var(--space-xs);
   display: flex;
   flex-direction: column;
-  gap: var(--space-s);
+  gap: 6px;
   justify-content: center;
   border-inline-start: 1px solid rgba(255,255,255,0.12);
   padding-inline-start: var(--space-l);
