@@ -9,30 +9,42 @@
 <body>
 
 <header class="site-header">
-  <div class="header-inner">
-    <a href="index.html" class="site-logo">
-      <span class="logo-name">The Guide to Pittsburgh Golf</span>
-      <span class="logo-tagline">Know Before You Book</span>
-    </a>
-    <button class="nav-toggle" id="navToggle" aria-label="Open menu">☰</button>
-    <ul class="nav-links" id="navLinks">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="reviews.html">Reviews</a></li>
-      <li><a href="courses.html">Course Directory</a></li>
-      <li><a href="contact.html">Contact</a></li>
-    </ul>
+  <div class="site-header__wrap">
+    <div class="site-header__grid">
+      <div class="site-header__logo-col">
+        <a href="index.html" class="site-logo">
+          <span class="logo-name">The Guide to<br>Pittsburgh Golf</span>
+        </a>
+      </div>
+      <div class="site-header__tagline">
+        <p><em>Know before you book.</em> Western PA's most complete golf resource — every course within 60 miles, reviewed.</p>
+      </div>
+    </div>
+    <hr class="site-header__rule">
+    <div class="site-header__nav-row">
+      <button class="nav-toggle" id="navToggle" aria-label="Open menu">Menu</button>
+      <ul class="nav-links" id="navLinks" role="list">
+        <li><a href="index.html"><mark>Home</mark></a></li>
+        <li><a href="reviews.html">Reviews</a></li>
+        <li><a href="courses.html">Course Directory</a></li>
+        <li><a href="shop.html">Shop</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
   </div>
 </header>
 
 <!-- ── Hero ── -->
 <div class="home-hero">
   <div class="hero-content">
-    <div class="eyebrow">Pittsburgh, Pennsylvania</div>
-    <h1>The Ultimate Guide to Pittsburgh Golf</h1>
-    <p>Where and where <em>not</em> to book your next tee time — every course within 60 miles, reviewed.</p>
-    <div class="hero-btns">
-      <a href="reviews.html" class="btn btn-gold">Read the Reviews</a>
-      <a href="courses.html" class="btn btn-hero-outline">Browse Courses</a>
+    <div>
+      <span class="eyebrow">Pittsburgh, Pennsylvania</span>
+      <h1>The Ultimate Guide to <mark>Pittsburgh Golf</mark></h1>
+      <p>Where and where <em>not</em> to book your next tee time — every course within 60 miles, reviewed.</p>
+      <div class="hero-btns">
+        <a href="reviews.html" class="btn btn-gold">Read the Reviews</a>
+        <a href="courses.html" class="btn btn-hero-outline">Browse Courses</a>
+      </div>
     </div>
   </div>
 </div>
@@ -41,7 +53,7 @@
 <div class="page-wrap">
   <div class="section">
     <div class="section-head">
-      <h2>Latest Reviews</h2>
+      <h2><mark>Latest Reviews</mark></h2>
       <a href="reviews.html">All reviews →</a>
     </div>
     <div class="post-grid" id="latestPosts"></div>
@@ -126,6 +138,7 @@
           <li><a href="index.html">Home</a></li>
           <li><a href="reviews.html">Reviews</a></li>
           <li><a href="courses.html">Course Directory</a></li>
+          <li><a href="shop.html">Shop</a></li>
           <li><a href="contact.html">Contact</a></li>
         </ul>
       </div>
