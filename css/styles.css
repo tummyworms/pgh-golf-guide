@@ -220,20 +220,20 @@ hr {
 .logo-tagline { display: none; }
 
 .site-header__tagline {
-  padding-block: var(--space-xs);
+  padding-block: var(--space-m);
   display: flex;
   flex-direction: column;
-  gap: var(--space-xs);
+  gap: var(--space-s);
   justify-content: center;
   border-inline-start: 1px solid rgba(255,255,255,0.12);
   padding-inline-start: var(--space-l);
 }
 .site-header__tagline-lead {
   font-family: var(--font-base);
-  font-size: clamp(0.9rem, 0.85rem + 0.25vi, 1.05rem);
-  line-height: 1.5;
-  color: rgba(237,236,229,0.75);
-  max-width: 48ch;
+  font-size: clamp(1.05rem, 0.95rem + 0.5vi, 1.35rem);
+  line-height: 1.55;
+  color: rgba(237,236,229,0.82);
+  max-width: 44ch;
 }
 .site-header__tagline-lead em { font-style: italic; color: var(--color-primary); }
 
@@ -349,6 +349,28 @@ hr {
   .nav-links.open { display: flex; }
   .nav-links a { color: var(--color-light); font-size: 1rem; padding-block: 4px; }
   .nav-links a.active { color: var(--color-dark); }
+}
+
+/* ─── Slogan strip ─────────────────────────────────────── */
+.slogan-strip {
+  border-block-end: 1px solid var(--color-dark);
+  padding-block: var(--space-l);
+  padding-inline: var(--gutter);
+  text-align: center;
+  background: var(--color-light);
+}
+.slogan-strip p {
+  font-family: var(--font-base);
+  font-style: italic;
+  font-size: clamp(1.15rem, 1rem + 0.75vi, 1.6rem);
+  color: var(--color-dark);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+.slogan-strip p em {
+  font-style: normal;
+  font-weight: 700;
+  font-family: var(--font-display);
 }
 
 /* ─── Eyebrow ──────────────────────────────────────────── */
@@ -1394,7 +1416,7 @@ footer {
   text-decoration: none;
 }
 .footer-logo__img {
-  width: clamp(160px, 18vw, 260px);
+  width: clamp(280px, 35vw, 520px);
   height: auto;
   object-fit: contain;
   flex-shrink: 0;
