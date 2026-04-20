@@ -1658,10 +1658,10 @@ footer {
 .post-side .meter-svg-wrap svg { width: 52px; height: 52px; flex-shrink: 0; }
 .post-side .meter-card-overall {
   flex-direction: column; text-align: center; padding: 14px 12px;
-  background: var(--color-primary); border-color: var(--color-primary); margin-bottom: 4px;
+  background: var(--color-dark); border-color: var(--color-dark); margin-bottom: 4px;
 }
 .post-side .meter-card-overall .meter-svg-wrap svg { width: 100px; height: 100px; }
-.post-side .meter-card-overall .meter-label { text-align: center; font-size: 0.78rem; margin-top: 7px; color: var(--color-dark); }
+.post-side .meter-card-overall .meter-label { text-align: center; font-size: 0.78rem; margin-top: 7px; color: var(--color-light); }
 .post-side .meter-label { margin-top: 0; text-align: left; font-size: 0.72rem; }
 .post-side .meters-heading { font-size: 0.62rem; letter-spacing: 0.12em; margin-bottom: var(--space-xs); }
 
