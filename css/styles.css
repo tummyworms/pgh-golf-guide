@@ -1464,6 +1464,46 @@ footer {
   gap: var(--space-xs);
 }
 
+/* ─── Social icon links ────────────────────────────────── */
+.social-links {
+  display: flex;
+  gap: var(--space-xs);
+  margin-top: var(--space-xs);
+}
+.social-icon-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(237,236,229,0.6);
+  text-decoration: none;
+  transition: var(--ease);
+  border-radius: var(--radius);
+}
+.social-icon-link svg { width: 17px; height: 17px; display: block; }
+.social-icon-link:hover {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-dark);
+  transform: translateY(-1px);
+}
+
+/* Contact page social icon */
+.contact-social-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-dark);
+  font-family: var(--font-display);
+  font-size: 0.87rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+.contact-social-link svg { width: 18px; height: 18px; flex-shrink: 0; }
+.contact-social-link:hover { color: var(--color-primary); }
+
 .admin-ghost-link {
   opacity: 0.2;
   color: rgba(237,236,229,0.5) !important;
