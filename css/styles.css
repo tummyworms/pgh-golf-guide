@@ -3,7 +3,7 @@
  * Design system modelled on Piccalilli (piccalil.li)
  * -------------------------------------------------------
  * Fonts:   Rosart (serif, body)  ·  DM Sans (sans, headings/labels)
- * Palette: #edece5 bg  ·  #181617 text  ·  #f6d200 primary
+ * Palette: #edece5 bg  ·  #181617 text  ·  #c9971c primary (gold)
  */
 
 @import url('https://fonts.googleapis.com/css2?family=Rosart:ital,wght@0,400;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,700;0,9..40,900;1,9..40,400&display=swap');
@@ -27,8 +27,8 @@
   --color-light-shade: #b0afa9;
   --color-mid:         #575554;
   --color-mid-glare:   #e0dfd9;
-  --color-primary:     #f6d200;
-  --color-primary-glare: #f9e159;
+  --color-primary:     #c9971c;
+  --color-primary-glare: #d9aa38;
   --color-secondary:   #f63123;
 
   /* Legacy aliases – keeps all existing JS-generated HTML working */
@@ -38,7 +38,7 @@
   --green-light:   var(--color-mid);
   --gold:          var(--color-primary);
   --gold-light:    var(--color-primary-glare);
-  --gold-pale:     #fdf9d4;
+  --gold-pale:     #f5e8c0;
   --black-rich:    var(--color-dark);
   --cream:         var(--color-light);
   --sand:          var(--color-light-glare);
@@ -122,8 +122,8 @@ img { max-width: 100%; display: block; height: auto; }
 mark {
   background: linear-gradient(0deg,
     transparent 20%,
-    rgba(246,210,0,1) 20%,
-    rgba(246,210,0,1) 84%,
+    rgba(201,151,28,1) 20%,
+    rgba(201,151,28,1) 84%,
     transparent 84%
   );
   color: inherit;
@@ -522,9 +522,9 @@ hr {
 /* Draft badge */
 .draft-badge {
   display: inline-block;
-  background: rgba(246,210,0,0.15);
+  background: rgba(201,151,28,0.15);
   color: var(--color-primary);
-  border: 1px solid rgba(246,210,0,0.3);
+  border: 1px solid rgba(201,151,28,0.3);
   font-family: var(--font-display);
   font-size: 0.62rem;
   font-weight: 700;
@@ -550,7 +550,7 @@ hr {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  background: linear-gradient(90deg, #c8a800, #f6d200, #c8a800, #f6d200, #c8a800);
+  background: linear-gradient(90deg, #a87a10, #c9971c, #a87a10, #c9971c, #a87a10);
   background-size: 200% auto;
   animation: cotw-shine 2.4s linear infinite;
   color: var(--color-dark);
@@ -562,7 +562,7 @@ hr {
   padding: 4px 12px;
   border-radius: 20px;
   white-space: nowrap;
-  box-shadow: 0 2px 10px rgba(246,210,0,0.4);
+  box-shadow: 0 2px 10px rgba(201,151,28,0.4);
   z-index: 2;
 }
 .cotw-trophy { font-size: 0.85rem; }
@@ -572,7 +572,7 @@ hr {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: linear-gradient(90deg, #c8a800, #f6d200, #c8a800, #f6d200, #c8a800);
+  background: linear-gradient(90deg, #a87a10, #c9971c, #a87a10, #c9971c, #a87a10);
   background-size: 200% auto;
   animation: cotw-shine 2.4s linear infinite;
   color: var(--color-dark);
@@ -584,7 +584,7 @@ hr {
   padding: 6px 18px;
   border-radius: 24px;
   margin-bottom: var(--space-s);
-  box-shadow: 0 3px 14px rgba(246,210,0,0.3);
+  box-shadow: 0 3px 14px rgba(201,151,28,0.3);
 }
 
 /* ─── Single post ──────────────────────────────────────── */
@@ -1286,12 +1286,12 @@ textarea { resize: vertical; }
   letter-spacing: 0.02em;
   cursor: pointer;
   color: var(--color-dark);
-  background: linear-gradient(90deg, #c8a800, #f6d200, #c8a800, #f6d200, #c8a800);
+  background: linear-gradient(90deg, #a87a10, #c9971c, #a87a10, #c9971c, #a87a10);
   background-size: 200% auto;
   animation: cotw-shine 2.6s linear infinite;
   transition: transform 0.15s, box-shadow 0.15s;
 }
-.newsletter-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(246,210,0,0.5); }
+.newsletter-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(201,151,28,0.5); }
 .newsletter-btn:active { transform: translateY(0); }
 .newsletter-success {
   font-family: var(--font-display); color: var(--color-primary);
