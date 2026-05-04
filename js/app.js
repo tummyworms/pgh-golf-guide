@@ -255,9 +255,67 @@ async function handleLoginSubmit(e) {
   }
 }
 
+// ── Weather strip ─────────────────────────────────
+function weatherInfo(code, wind) {
+  let icon, desc, verdict, verdictClass;
+  if      (code === 0)            { icon = '☀️';  desc = 'Clear'; }
+  else if (code <= 2)             { icon = '🌤️'; desc = 'Mostly Clear'; }
+  else if (code === 3)            { icon = '☁️';  desc = 'Overcast'; }
+  else if (code <= 48)            { icon = '🌫️'; desc = 'Foggy'; }
+  else if (code <= 55)            { icon = '🌦️'; desc = 'Drizzle'; }
+  else if (code <= 65)            { icon = '🌧️'; desc = 'Rain'; }
+  else if (code <= 77)            { icon = '❄️';  desc = 'Snow'; }
+  else if (code <= 82)            { icon = '🌧️'; desc = 'Showers'; }
+  else                            { icon = '⛈️';  desc = 'Thunderstorm'; }
+
+  if      (code >= 95)            { verdict = 'Stay off the course';       verdictClass = 'weather-verdict-bad'; }
+  else if (code >= 61 || code === 55) { verdict = 'Tough conditions';      verdictClass = 'weather-verdict-bad'; }
+  else if (code >= 51)            { verdict = 'Pack a rain jacket';        verdictClass = 'weather-verdict-warn'; }
+  else if (code >= 45)            { verdict = 'Low visibility';            verdictClass = 'weather-verdict-warn'; }
+  else if (wind >= 25)            { verdict = 'Very windy — keep it low';  verdictClass = 'weather-verdict-warn'; }
+  else if (wind >= 15)            { verdict = 'Windy — club up';           verdictClass = 'weather-verdict-warn'; }
+  else if (code <= 1)             { verdict = 'Great day for golf';        verdictClass = 'weather-verdict-good'; }
+  else if (code <= 2)             { verdict = 'Good day for golf';         verdictClass = 'weather-verdict-good'; }
+  else                            { verdict = 'Decent conditions';         verdictClass = 'weather-verdict-ok'; }
+
+  return { icon, desc, verdict, verdictClass };
+}
+
+async function initWeather() {
+  const header = document.querySelector('.site-header');
+  if (!header) return;
+
+  const strip = document.createElement('div');
+  strip.className = 'site-header__topbar';
+  strip.id = 'weatherStrip';
+  strip.innerHTML = `<div class="site-header__topbar-inner"><span class="weather-loading">Loading weather…</span></div>`;
+  header.insertBefore(strip, header.firstChild);
+
+  try {
+    const res = await fetch(
+      'https://api.open-meteo.com/v1/forecast?latitude=40.4406&longitude=-79.9959' +
+      '&current=temperature_2m,wind_speed_10m,weather_code' +
+      '&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=America%2FNew_York'
+    );
+    const data = await res.json();
+    const { temperature_2m: temp, wind_speed_10m: wind, weather_code: code } = data.current;
+    const { icon, desc, verdict, verdictClass } = weatherInfo(code, wind);
+    strip.querySelector('.site-header__topbar-inner').innerHTML = `
+      <span class="weather-loc">Pittsburgh, PA</span>
+      <span class="sep">·</span>
+      <span class="weather-main">${icon} ${Math.round(temp)}°F &nbsp;·&nbsp; ${Math.round(wind)} mph wind &nbsp;·&nbsp; ${desc}</span>
+      <span class="sep">·</span>
+      <span class="weather-verdict ${verdictClass}">${verdict}</span>
+    `;
+  } catch {
+    strip.remove();
+  }
+}
+
 // ── Init ──────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   seedCoursesIfEmpty();
+  initWeather();
   setActiveNav();
   auth.onAuthStateChanged(user => {
     updateAdminNav();
