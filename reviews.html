@@ -203,6 +203,32 @@
         </label>
       </div>
     </div>
+    <div class="amenities-editor">
+      <div class="amenities-editor-head">
+        <span class="compose-body-label" style="margin:0;">Amenities</span>
+      </div>
+      <p class="amenities-hint">Check everything this course offers. Displayed as tags on the published review.</p>
+      <div class="amenities-check-grid">
+        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Pro Shop"><span>Pro Shop</span></label>
+        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Driving Range"><span>Driving Range</span></label>
+        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Practice Putting Green"><span>Practice Putting Green</span></label>
+        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Chipping Area"><span>Chipping Area</span></label>
+        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Snack Bar / Turn Shack"><span>Snack Bar / Turn Shack</span></label>
+        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Full Restaurant"><span>Full Restaurant</span></label>
+        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Bar / Lounge"><span>Bar / Lounge</span></label>
+        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Golf Cart Rental"><span>Golf Cart Rental</span></label>
+        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Pull Cart Rental"><span>Pull Cart Rental</span></label>
+        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Club Rental"><span>Club Rental</span></label>
+        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Outings / Events"><span>Outings / Events</span></label>
+        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Lessons / Instruction"><span>Lessons / Instruction</span></label>
+        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Walking Allowed"><span>Walking Allowed</span></label>
+        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Twilight Rates"><span>Twilight Rates</span></label>
+        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Caddies Available"><span>Caddies Available</span></label>
+        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="GPS Carts"><span>GPS Carts</span></label>
+        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Lodging On-Site"><span>Lodging On-Site</span></label>
+        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Swimming Pool"><span>Swimming Pool</span></label>
+      </div>
+    </div>
     <div style="margin-top:24px;">
       <span class="compose-body-label">Full Review *</span>
       <p style="font-size:0.8rem; color:var(--ink-light); font-family:var(--sans); margin-bottom:10px;">Double line-breaks become paragraphs.</p>
@@ -356,6 +382,9 @@
     if (cotw) cotw.checked = !!(post?.courseOfWeek);
     const sim = document.getElementById('fIndoorSimulator');
     if (sim) sim.checked = !!(post?.indoorSimulator);
+    document.querySelectorAll('.amenities-check-grid input[type="checkbox"]').forEach(cb => {
+      cb.checked = !!(post?.amenities?.includes(cb.value));
+    });
     initMeters(post?.meters);
   }
 
@@ -390,6 +419,7 @@
       imageUrl:     document.getElementById('fImageUrl').value.trim(),
       courseOfWeek:     document.getElementById('fCourseOfWeek').checked,
       indoorSimulator:  document.getElementById('fIndoorSimulator').checked,
+      amenities:        Array.from(document.querySelectorAll('.amenities-check-grid input[type="checkbox"]:checked')).map(cb => cb.value),
       meters:           collectMeters(),
       body,
       status,

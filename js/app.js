@@ -141,6 +141,18 @@ function renderBody(text) {
   return text.split(/\n\n+/).map(p => `<p>${escapeHtml(p.trim()).replace(/\n/g,'<br>')}</p>`).join('');
 }
 
+// ── Amenities ────────────────────────────────────
+function renderAmenities(amenities) {
+  if (!amenities || !amenities.length) return '';
+  return `
+    <div class="amenities-section">
+      <div class="amenities-section-head">Amenities</div>
+      <div class="amenities-tags">
+        ${amenities.map(a => `<span class="amenity-tag">${escapeHtml(a)}</span>`).join('')}
+      </div>
+    </div>`;
+}
+
 // ── Meter gauges ─────────────────────────────────
 function renderMeterSVG(value) {
   const v = Math.max(0, Math.min(100, Number(value) || 0));
