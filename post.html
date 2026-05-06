@@ -189,29 +189,41 @@
       </div>
       <p class="amenities-hint">Check everything this course offers. Displayed as tags on the published review.</p>
       <div class="amenities-check-grid">
-        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Pro Shop"><span>Pro Shop</span></label>
-        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Driving Range"><span>Driving Range</span></label>
-        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Practice Putting Green"><span>Practice Putting Green</span></label>
-        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Chipping Area"><span>Chipping Area</span></label>
-        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Snack Bar / Turn Shack"><span>Snack Bar / Turn Shack</span></label>
-        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Full Restaurant"><span>Full Restaurant</span></label>
-        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Bar / Lounge"><span>Bar / Lounge</span></label>
-        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Golf Cart Rental"><span>Golf Cart Rental</span></label>
-        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Pull Cart Rental"><span>Pull Cart Rental</span></label>
-        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Club Rental"><span>Club Rental</span></label>
-        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Outings / Events"><span>Outings / Events</span></label>
-        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Lessons / Instruction"><span>Lessons / Instruction</span></label>
-        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Walking Allowed"><span>Walking Allowed</span></label>
-        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Twilight Rates"><span>Twilight Rates</span></label>
-        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Caddies Available"><span>Caddies Available</span></label>
-        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="GPS Carts"><span>GPS Carts</span></label>
-        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Lodging On-Site"><span>Lodging On-Site</span></label>
-        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Swimming Pool"><span>Swimming Pool</span></label>
+        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Pro Shop"><span>🛍️ Pro Shop</span></label>
+        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Driving Range"><span>🏌️ Driving Range</span></label>
+        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Practice Putting Green"><span>⛳ Practice Putting Green</span></label>
+        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Chipping Area"><span>🎯 Chipping Area</span></label>
+        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Snack Bar / Turn Shack"><span>🌭 Snack Bar / Turn Shack</span></label>
+        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Full Restaurant"><span>🍽️ Full Restaurant</span></label>
+        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Bar / Lounge"><span>🍺 Bar / Lounge</span></label>
+        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Golf Cart Rental"><span>🚗 Golf Cart Rental</span></label>
+        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Pull Cart Rental"><span>🛒 Pull Cart Rental</span></label>
+        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Club Rental"><span>🏒 Club Rental</span></label>
+        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Outings / Events"><span>🎉 Outings / Events</span></label>
+        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Lessons / Instruction"><span>🎓 Lessons / Instruction</span></label>
+        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Walking Allowed"><span>🚶 Walking Allowed</span></label>
+        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Twilight Rates"><span>🌙 Twilight Rates</span></label>
+        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Caddies Available"><span>🎒 Caddies Available</span></label>
+        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="GPS Carts"><span>📍 GPS Carts</span></label>
+        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Lodging On-Site"><span>🏨 Lodging On-Site</span></label>
+        <label class="amenity-check-label"><input type="checkbox" name="amenity" value="Swimming Pool"><span>🏊 Swimming Pool</span></label>
       </div>
     </div>
     <div style="margin-top:24px;">
       <span class="compose-body-label">Full Review *</span>
+      <p style="font-size:0.8rem; color:var(--ink-light); font-family:var(--sans); margin-bottom:10px; margin-top:6px;">Double line-breaks become paragraphs. Use <code style="background:var(--rule);padding:1px 5px;font-size:0.8rem;">[image:1]</code> tokens to place inline images.</p>
       <textarea id="composeBody" style="min-height:320px;"></textarea>
+    </div>
+    <div class="body-images-editor">
+      <div class="body-images-head">
+        <span class="compose-body-label" style="margin:0;">Inline Images</span>
+        <label class="btn btn-outline btn-sm body-img-upload-label">
+          + Upload Image
+          <input type="file" id="bodyImageFile" accept="image/*" style="display:none" onchange="handleBodyImageUpload(this)">
+        </label>
+      </div>
+      <p class="body-images-hint">Upload images here, then click "Insert at Cursor" to place a token in the review text — or type <code>[image:1]</code> directly. Each token is replaced by the image when published.</p>
+      <div id="bodyImageList"></div>
     </div>
 
     <div class="meters-editor">
@@ -314,7 +326,7 @@
 
       <div class="post-layout">
         <div class="post-main">
-          <div class="post-body">${renderBody(post.body)}</div>
+          <div class="post-body">${renderBody(post.body, post.bodyImages)}</div>
         </div>
         <aside class="post-side">
           ${stats.length ? `
@@ -375,6 +387,7 @@
     document.querySelectorAll('.amenities-check-grid input[type="checkbox"]').forEach(cb => {
       cb.checked = !!(p.amenities?.includes(cb.value));
     });
+    initBodyImages(p.bodyImages);
     initMeters(p.meters);
   }
 
@@ -403,6 +416,7 @@
       courseOfWeek:    document.getElementById('fCourseOfWeek').checked,
       indoorSimulator: document.getElementById('fIndoorSimulator').checked,
       amenities:       Array.from(document.querySelectorAll('.amenities-check-grid input[type="checkbox"]:checked')).map(cb => cb.value),
+      bodyImages:      [...bodyImages],
       meters:          collectMeters(),
       body,
       status,
@@ -447,6 +461,61 @@
     if (!confirm('Delete this review permanently?')) return;
     await deletePost(postId);
     window.location.href = 'reviews.html';
+  }
+
+  // ── Body images ──
+  let bodyImages = [];
+  function initBodyImages(data) {
+    bodyImages = data ? [...data] : [];
+    renderBodyImageList();
+  }
+  function renderBodyImageList() {
+    const el = document.getElementById('bodyImageList');
+    if (!el) return;
+    if (!bodyImages.length) {
+      el.innerHTML = '<p class="body-images-empty">No images yet — upload one above.</p>';
+      return;
+    }
+    el.innerHTML = `<div class="body-img-list">${bodyImages.map((url, i) => `
+      <div class="body-img-item">
+        <img src="${escapeHtml(url)}" class="body-img-thumb" alt="Image ${i+1}">
+        <div class="body-img-meta">
+          <span class="body-img-token">[image:${i+1}]</span>
+          <div class="body-img-actions">
+            <button type="button" class="btn btn-outline btn-sm" onclick="insertImageToken(${i+1})">Insert at Cursor</button>
+            <button type="button" class="btn btn-xs btn-danger" onclick="removeBodyImage(${i})">✕ Remove</button>
+          </div>
+        </div>
+      </div>`).join('')}</div>`;
+  }
+  async function handleBodyImageUpload(input) {
+    const file = input.files[0]; if (!file) return;
+    const el = document.getElementById('bodyImageList');
+    const msg = document.createElement('p');
+    msg.className = 'body-images-empty'; msg.textContent = 'Uploading…';
+    el.appendChild(msg);
+    try {
+      const url = await uploadPhoto(file);
+      bodyImages.push(url);
+      renderBodyImageList();
+    } catch { showToast('Upload failed.'); renderBodyImageList(); }
+    input.value = '';
+  }
+  function removeBodyImage(i) {
+    bodyImages.splice(i, 1);
+    renderBodyImageList();
+    showToast('Image removed. Update any [image:N] tokens in the body if needed.');
+  }
+  function insertImageToken(n) {
+    const ta = document.getElementById('composeBody');
+    if (!ta) return;
+    const token = `[image:${n}]`;
+    const start = ta.selectionStart, end = ta.selectionEnd;
+    const before = ta.value.substring(0, start);
+    const after  = ta.value.substring(end);
+    const sep = (s) => s ? '\n\n' : '';
+    ta.value = before + sep(before && !before.endsWith('\n\n')) + token + sep(after && !after.startsWith('\n\n')) + after;
+    ta.focus();
   }
 
   // ── Meter editor ──

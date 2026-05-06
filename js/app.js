@@ -135,20 +135,60 @@ async function uploadPhoto(file) {
   return data.secure_url;
 }
 
-// Turn plain textarea text into <p> tags
-function renderBody(text) {
+// Turn plain textarea text into <p> tags; [image:N] tokens become inline images
+function renderBody(text, bodyImages) {
   if (!text) return '';
-  return text.split(/\n\n+/).map(p => `<p>${escapeHtml(p.trim()).replace(/\n/g,'<br>')}</p>`).join('');
+  const imgs = bodyImages || [];
+  return text.split(/\n\n+/).map(p => {
+    const trimmed = p.trim();
+    if (!trimmed) return '';
+    const solo = trimmed.match(/^\[image:(\d+)\]$/);
+    if (solo) {
+      const url = imgs[parseInt(solo[1]) - 1];
+      return url ? `<figure class="post-inline-img"><img src="${escapeHtml(url)}" loading="lazy" alt=""></figure>` : '';
+    }
+    const parts = trimmed.split(/(\[image:\d+\])/);
+    const html = parts.map(part => {
+      const tok = part.match(/^\[image:(\d+)\]$/);
+      if (tok) {
+        const url = imgs[parseInt(tok[1]) - 1];
+        return url ? `<img src="${escapeHtml(url)}" class="post-inline-img-inline" loading="lazy" alt="">` : escapeHtml(part);
+      }
+      return escapeHtml(part).replace(/\n/g, '<br>');
+    }).join('');
+    return `<p>${html}</p>`;
+  }).filter(Boolean).join('');
 }
 
 // ── Amenities ────────────────────────────────────
+const AMENITY_ICONS = {
+  'Pro Shop':                '🛍️',
+  'Driving Range':           '🏌️',
+  'Practice Putting Green':  '⛳',
+  'Chipping Area':           '🎯',
+  'Snack Bar / Turn Shack':  '🌭',
+  'Full Restaurant':         '🍽️',
+  'Bar / Lounge':            '🍺',
+  'Golf Cart Rental':        '🚗',
+  'Pull Cart Rental':        '🛒',
+  'Club Rental':             '🏒',
+  'Outings / Events':        '🎉',
+  'Lessons / Instruction':   '🎓',
+  'Walking Allowed':         '🚶',
+  'Twilight Rates':          '🌙',
+  'Caddies Available':       '🎒',
+  'GPS Carts':               '📍',
+  'Lodging On-Site':         '🏨',
+  'Swimming Pool':           '🏊',
+};
+
 function renderAmenities(amenities) {
   if (!amenities || !amenities.length) return '';
   return `
     <div class="amenities-section">
       <div class="amenities-section-head">Amenities</div>
       <div class="amenities-tags">
-        ${amenities.map(a => `<span class="amenity-tag">${escapeHtml(a)}</span>`).join('')}
+        ${amenities.map(a => `<span class="amenity-tag">${AMENITY_ICONS[a] ? `<span class="amenity-icon">${AMENITY_ICONS[a]}</span>` : ''}${escapeHtml(a)}</span>`).join('')}
       </div>
     </div>`;
 }
@@ -282,14 +322,14 @@ function weatherInfo(code, wind) {
 }
 
 async function initWeather() {
-  const header = document.querySelector('.site-header');
-  if (!header) return;
+  const navRow = document.querySelector('.site-header__nav-row');
+  if (!navRow) return;
 
-  const strip = document.createElement('div');
-  strip.className = 'site-header__topbar';
-  strip.id = 'weatherStrip';
-  strip.innerHTML = `<div class="site-header__topbar-inner"><span class="weather-loading">Loading weather…</span></div>`;
-  header.insertBefore(strip, header.firstChild);
+  const widget = document.createElement('div');
+  widget.className = 'weather-nav';
+  widget.id = 'weatherStrip';
+  widget.innerHTML = `<span class="weather-loading">…</span>`;
+  navRow.appendChild(widget);
 
   try {
     const res = await fetch(
@@ -300,15 +340,13 @@ async function initWeather() {
     const data = await res.json();
     const { temperature_2m: temp, wind_speed_10m: wind, weather_code: code } = data.current;
     const { icon, desc, verdict, verdictClass } = weatherInfo(code, wind);
-    strip.querySelector('.site-header__topbar-inner').innerHTML = `
-      <span class="weather-loc">Pittsburgh, PA</span>
-      <span class="sep">·</span>
-      <span class="weather-main">${icon} ${Math.round(temp)}°F &nbsp;·&nbsp; ${Math.round(wind)} mph wind &nbsp;·&nbsp; ${desc}</span>
-      <span class="sep">·</span>
+    widget.innerHTML = `
+      <span class="weather-main">${icon} ${Math.round(temp)}°F · ${Math.round(wind)} mph</span>
+      <span class="weather-sep">·</span>
       <span class="weather-verdict ${verdictClass}">${verdict}</span>
     `;
   } catch {
-    strip.remove();
+    widget.remove();
   }
 }
 
