@@ -63,11 +63,7 @@
         <label for="ncLoc">Location</label>
         <input type="text" id="ncLoc" placeholder="City, PA" />
       </div>
-      <div class="form-group" style="flex:1; min-width:120px;">
-        <label for="ncDist">Distance</label>
-        <input type="text" id="ncDist" placeholder="~20 mi N" />
-      </div>
-      <div class="form-group" style="width:150px;">
+<div class="form-group" style="width:150px;">
         <label for="ncType">Type</label>
         <select id="ncType">
           <option value="Public">Public</option>
@@ -102,7 +98,6 @@
           <tr>
             <th>Course</th>
             <th>Location</th>
-            <th>Distance</th>
             <th>Type</th>
             <th>Review</th>
             <th id="adminActionsHead" style="display:none;"></th>
@@ -218,7 +213,6 @@
         <tr>
           <td class="course-name-cell">${escapeHtml(c.name)}</td>
           <td class="loc-cell">${escapeHtml(c.location)}</td>
-          <td class="dist-cell">${escapeHtml(c.dist||'')}</td>
           <td><span class="type-pill ${typeCls}">${escapeHtml(c.type)}</span></td>
           <td>${reviewCell}</td>
           ${adminCell}
@@ -244,11 +238,10 @@
   async function handleAddCourse() {
     const name = document.getElementById('ncName').value.trim();
     const loc  = document.getElementById('ncLoc').value.trim();
-    const dist = document.getElementById('ncDist').value.trim();
     const type = document.getElementById('ncType').value;
     if (!name || !loc) { showToast('Name and location are required.'); return; }
-    await addCourseToDirectory({ name, location: loc, dist, type });
-    ['ncName','ncLoc','ncDist'].forEach(id => document.getElementById(id).value = '');
+    await addCourseToDirectory({ name, location: loc, type });
+    ['ncName','ncLoc'].forEach(id => document.getElementById(id).value = '');
     showToast(`"${name}" added.`);
   }
 
