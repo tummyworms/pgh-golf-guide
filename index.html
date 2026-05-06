@@ -4,12 +4,28 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The Guide to Pittsburgh Golf</title>
+  <meta name="description" content="Know before you book. Pittsburgh's most complete golf guide — 60+ courses reviewed, honest and updated every season." />
+  <link rel="canonical" href="https://www.pghgolfs.com/" />
+  <!-- Favicon -->
+  <link rel="icon" href="img/logo.png" type="image/png" />
+  <link rel="apple-touch-icon" href="img/logo.png" />
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="The Guide to Pittsburgh Golf" />
+  <meta property="og:title" content="The Guide to Pittsburgh Golf" />
+  <meta property="og:description" content="Know before you book. 60+ Western PA courses reviewed — honest, updated every season." />
+  <meta property="og:url" content="https://www.pghgolfs.com/" />
+  <meta property="og:image" content="https://www.pghgolfs.com/img/logo.png" />
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="The Guide to Pittsburgh Golf" />
+  <meta name="twitter:description" content="Know before you book. 60+ Western PA courses reviewed." />
+  <meta name="twitter:image" content="https://www.pghgolfs.com/img/logo.png" />
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
 
 <header class="site-header">
-  </div>
   <div class="site-header__wrap">
     <div class="site-header__grid">
       <div class="site-header__logo-col">
@@ -30,13 +46,16 @@
     </div>
     <hr class="site-header__rule">
     <div class="site-header__nav-row">
-      <button class="nav-toggle" id="navToggle" aria-label="Open menu">Menu</button>
+      <button class="nav-toggle" id="navToggle" aria-label="Open menu">☰</button>
       <ul class="nav-links" id="navLinks" role="list">
         <li><a href="index.html"><mark>Home</mark></a></li>
         <li><a href="reviews.html">Reviews</a></li>
         <li><a href="courses.html">Course Directory</a></li>
         <li><a href="contact.html">Contact</a></li>
       </ul>
+      <div class="header-weather" id="headerWeather" aria-live="polite">
+        <span class="weather-loading">…</span>
+      </div>
     </div>
   </div>
 </header>
