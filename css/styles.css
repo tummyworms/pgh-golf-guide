@@ -222,12 +222,11 @@ hr {
   color: inherit;
 }
 .site-logo__img {
-  width: clamp(64px, 7vw, 88px);
-  height: clamp(64px, 7vw, 88px);
-  object-fit: cover;
-  object-position: center;
-  border-radius: 50%;
+  width: clamp(220px, 20vw, 360px);
+  height: auto;
+  object-fit: contain;
   flex-shrink: 0;
+  mix-blend-mode: screen;
 }
 .logo-name { display: none; }
 .logo-tagline { display: none; }
@@ -358,8 +357,8 @@ hr {
     padding-block: var(--space-2xs) 0;
   }
   .site-logo__img {
-    width: clamp(52px, 13vw, 72px);
-    height: clamp(52px, 13vw, 72px);
+    width: clamp(130px, 38vw, 220px);
+    height: auto;
   }
 }
 
@@ -1468,12 +1467,11 @@ footer {
   text-decoration: none;
 }
 .footer-logo__img {
-  width: clamp(72px, 8vw, 100px);
-  height: clamp(72px, 8vw, 100px);
-  object-fit: cover;
-  object-position: center;
-  border-radius: 50%;
+  width: clamp(280px, 35vw, 520px);
+  height: auto;
+  object-fit: contain;
   flex-shrink: 0;
+  mix-blend-mode: screen;
 }
 .footer-brand p { font-family: var(--font-base); font-style: italic; font-size: 0.88rem; line-height: 1.7; color: rgba(237,236,229,0.6); max-width: 280px; }
 
