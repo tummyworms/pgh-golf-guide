@@ -209,6 +209,29 @@ hr {
 .weather-verdict-warn  { color: #f0a500; }
 .weather-verdict-bad   { color: var(--color-secondary); }
 
+/* ─── Weather in nav row ───────────────────────── */
+.header-weather {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+.header-weather .weather-sep {
+  color: rgba(255,255,255,0.18);
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  padding: 0 1px;
+}
+.header-weather .weather-verdict-short { display: none; }
+
+@media (max-width: 40em) {
+  .header-weather .weather-condition-txt,
+  .header-weather .weather-sep,
+  .header-weather .weather-verdict-full { display: none; }
+  .header-weather .weather-verdict-short { display: inline; }
+}
+
 .site-header__wrap {
   max-width: var(--wrapper-max);
   margin-inline: auto;
@@ -356,18 +379,20 @@ hr {
   .site-header__grid {
     grid-template-columns: 1fr;
     gap: 0;
+    justify-items: start;
   }
   .site-header__tagline {
     display: none;
   }
   .site-header__logo-col {
     padding-inline-start: 0;
+    width: 100%;
   }
   .site-header__wrap {
     padding-block: var(--space-2xs) 0;
   }
   .site-logo__img {
-    width: clamp(160px, 45vw, 260px);
+    width: clamp(130px, 38vw, 220px);
   }
 }
 
