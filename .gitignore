@@ -1,0 +1,24 @@
+# SSL / TLS certificates and keys
+*.key
+*.pem
+*.p12
+*.pfx
+*.crt
+*.cer
+*.der
+
+# Environment and secret files
+.env
+.env.*
+*.env
+secrets.json
+service-account*.json
+firebase-adminsdk*.json
+credentials.json
+
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
