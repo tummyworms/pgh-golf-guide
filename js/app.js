@@ -297,17 +297,7 @@ async function handleLoginSubmit(e) {
 
 // ── Weather widget ─────────────────────────────────
 function weatherInfo(code, wind) {
-  let icon, desc, verdict, shortVerdict, verdictClass;
-  if      (code === 0)            { icon = '☀️';  desc = 'Clear'; }
-  else if (code <= 2)             { icon = '🌤️'; desc = 'Mostly Clear'; }
-  else if (code === 3)            { icon = '☁️';  desc = 'Overcast'; }
-  else if (code <= 48)            { icon = '🌫️'; desc = 'Foggy'; }
-  else if (code <= 55)            { icon = '🌦️'; desc = 'Drizzle'; }
-  else if (code <= 65)            { icon = '🌧️'; desc = 'Rain'; }
-  else if (code <= 77)            { icon = '❄️';  desc = 'Snow'; }
-  else if (code <= 82)            { icon = '🌧️'; desc = 'Showers'; }
-  else                            { icon = '⛈️';  desc = 'Storm'; }
-
+  let verdict, shortVerdict, verdictClass;
   if      (code >= 95)               { verdict = 'Stay off the course';      shortVerdict = 'No play';  verdictClass = 'weather-verdict-bad'; }
   else if (code >= 61 || code === 55){ verdict = 'Tough conditions';         shortVerdict = 'No play';  verdictClass = 'weather-verdict-bad'; }
   else if (code >= 51)               { verdict = 'Pack a rain jacket';       shortVerdict = 'Rain';     verdictClass = 'weather-verdict-warn'; }
@@ -317,14 +307,12 @@ function weatherInfo(code, wind) {
   else if (code <= 1)                { verdict = 'Great day for golf';       shortVerdict = 'Play it';  verdictClass = 'weather-verdict-good'; }
   else if (code <= 2)                { verdict = 'Good day for golf';        shortVerdict = 'Play it';  verdictClass = 'weather-verdict-good'; }
   else                               { verdict = 'Decent conditions';        shortVerdict = 'Decent';   verdictClass = 'weather-verdict-ok'; }
-
-  return { icon, desc, verdict, shortVerdict, verdictClass };
+  return { verdict, shortVerdict, verdictClass };
 }
 
 async function initWeather() {
   const el = document.getElementById('headerWeather');
   if (!el) return;
-
   try {
     const res = await fetch(
       'https://api.open-meteo.com/v1/forecast?latitude=40.4406&longitude=-79.9959' +
@@ -333,13 +321,12 @@ async function initWeather() {
     );
     const data = await res.json();
     const { temperature_2m: temp, wind_speed_10m: wind, weather_code: code } = data.current;
-    const { icon, desc, verdict, shortVerdict, verdictClass } = weatherInfo(code, wind);
+    const { verdict, shortVerdict, verdictClass } = weatherInfo(code, wind);
     el.innerHTML =
-      `<span class="weather-main">${icon} ${Math.round(temp)}°F</span>` +
-      `<span class="weather-condition-txt weather-main"> · ${desc}</span>` +
-      `<span class="weather-sep" aria-hidden="true"> | </span>` +
-      `<span class="weather-verdict ${verdictClass} weather-verdict-full">${verdict}</span>` +
-      `<span class="weather-verdict ${verdictClass} weather-verdict-short">${shortVerdict}</span>`;
+      `<span class="weather-dot ${verdictClass}" aria-hidden="true"></span>` +
+      `<span class="weather-temp">${Math.round(temp)}°</span>` +
+      `<span class="weather-verdict-label ${verdictClass} weather-verdict-full">${verdict}</span>` +
+      `<span class="weather-verdict-label ${verdictClass} weather-verdict-short">${shortVerdict}</span>`;
   } catch {
     el.style.display = 'none';
   }
