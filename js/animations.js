@@ -22,7 +22,6 @@
     '.post-card',
     '.sponsor-slot',
     '.slogan-strip',
-    '.newsletter-section',
     '.contact-grid',
     '.post-article',
     '.course-table tbody tr',
@@ -65,13 +64,7 @@
     }
     REVEAL_SELECTORS.forEach(sel => {
       document.querySelectorAll(sel).forEach(el => {
-        if (!el.classList.contains('is-in')) {
-          // Newsletter section: opt into animation only when JS is running
-          if (el.classList.contains('newsletter-section')) {
-            el.classList.add('reveal-anim');
-          }
-          io.observe(el);
-        }
+        if (!el.classList.contains('is-in')) io.observe(el);
       });
     });
   }

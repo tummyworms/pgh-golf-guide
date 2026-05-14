@@ -291,9 +291,9 @@
    instead of transform — that way the caption inside the element doesn't
    scale with the photo. */
 @keyframes ken-burns-a {
-  0%   { background-size: 115% auto; background-position: center 48%; }
-  50%  { background-size: 128% auto; background-position: 42% 56%; }
-  100% { background-size: 115% auto; background-position: center 48%; }
+  0%   { background-size: 110% auto; background-position: center 50%; }
+  50%  { background-size: 118% auto; background-position: 48% 50%; }
+  100% { background-size: 110% auto; background-position: center 50%; }
 }
 @keyframes ken-burns-b {
   0%   { background-size: 118% auto; background-position: center 40%; }
@@ -406,14 +406,6 @@
 .course-table tbody tr:hover .reviewed-link { gap: 8px; }
 
 /* ─── Newsletter button: shimmer + flag flutter on success ─ */
-.newsletter-section {
-  transition: opacity 0.8s var(--ease-out-soft), transform 0.8s var(--ease-out-soft);
-}
-.newsletter-section.reveal-anim {
-  opacity: 0;
-  transform: translateY(20px);
-}
-.newsletter-section.reveal-anim.is-in { opacity: 1; transform: none; }
 
 .newsletter-btn { will-change: transform, box-shadow; }
 .newsletter-success {
@@ -626,7 +618,6 @@ footer.is-in { opacity: 1; }
   .section-head h2,
   .section-head a,
   .slogan-strip p,
-  .newsletter-section,
   .contact-grid > *,
   .post-article > *,
   footer {
