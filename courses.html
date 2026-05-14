@@ -20,6 +20,36 @@
   <meta name="twitter:title" content="Course Directory — The Guide to Pittsburgh Golf" />
   <meta name="twitter:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Pittsburgh_skyline_panorama_at_night.jpg/1200px-Pittsburgh_skyline_panorama_at_night.jpg" />
   <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/editorial.css" />
+  <style>
+    /* Courses page: editorial table polish */
+    .courses-controls-wrap {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-s);
+      margin-block-end: var(--space-m);
+      align-items: end;
+    }
+    @media (min-width: 50em) {
+      .courses-controls-wrap { grid-template-columns: 1fr max-content; gap: 2rem; }
+    }
+    .course-search input {
+      font-family: var(--font-base);
+      font-size: 1.05rem;
+      padding: 0.75rem 1rem;
+    }
+    .course-table--editorial tbody tr td.course-num-cell {
+      font-family: var(--font-display);
+      font-weight: 900;
+      color: var(--color-mid);
+      font-size: 0.85rem;
+      font-feature-settings: "tnum";
+      width: 56px;
+      text-align: center;
+      letter-spacing: 0.02em;
+    }
+  </style>
 </head>
 <body>
 
@@ -58,11 +88,20 @@
   </div>
 </header>
 
-<div class="page-banner">
-  <span class="eyebrow">Western Pennsylvania</span>
-  <h1><mark>Course Directory</mark></h1>
-  <p>30 courses within ~60 miles of Pittsburgh — updated as we play them.</p>
-</div>
+<section class="cb-section cb-hero">
+  <div class="cb-hero__grid">
+    <div class="cb-hero__lede">
+      <span class="cb-marker">Western Pennsylvania</span>
+      <h1>
+        <span class="cb-hero__line"><span class="serif">Course</span></span>
+        <span class="cb-hero__line"><mark>Directory</mark></span>
+      </h1>
+      <p class="cb-hero__sub">
+        30 courses within ~60 miles of Pittsburgh — updated as we play them.
+      </p>
+    </div>
+  </div>
+</section>
 
 <!-- Admin: add course bar -->
 <div class="admin-toolbar-bar" id="adminAddBar" style="display:none;">
@@ -98,7 +137,7 @@
   <div class="section">
     <div class="course-controls">
       <div class="course-search">
-        <input type="text" id="searchBox" placeholder="Search courses…" oninput="render()" />
+        <input type="text" id="searchBox" placeholder="Search courses by name or city…" oninput="render()" />
       </div>
       <div class="filter-bar" style="margin:0;">
         <button class="filter-btn active" data-filter="all">All</button>
@@ -110,9 +149,10 @@
     </div>
 
     <div class="table-wrap">
-      <table class="course-table">
+      <table class="course-table course-table--editorial">
         <thead>
           <tr>
+            <th>#</th>
             <th>Course</th>
             <th>Location</th>
             <th>Type</th>
@@ -189,6 +229,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="js/firebase-init.js"></script>
 <script src="js/app.js"></script>
+<script src="js/animations.js"></script>
 <script>
   let activeFilter = 'all';
   let _allCourses = [];
@@ -217,7 +258,7 @@
       return;
     }
 
-    tbody.innerHTML = courses.map(c => {
+    tbody.innerHTML = courses.map((c, idx) => {
       const typeCls = c.type.toLowerCase().replace(/[^a-z]/g,'');
       const post    = getLinkedPost(c, _allPosts);
       const reviewCell = post
@@ -226,8 +267,10 @@
       const adminCell = admin
         ? `<td style="white-space:nowrap;"><button class="btn btn-xs btn-danger" onclick="handleRemoveCourse('${c.id}')" title="Remove">✕</button></td>`
         : '';
+      const num = String(idx + 1).padStart(2, '0');
       return `
         <tr>
+          <td class="course-num-cell">${num}</td>
           <td class="course-name-cell">${escapeHtml(c.name)}</td>
           <td class="loc-cell">${escapeHtml(c.location)}</td>
           <td><span class="type-pill ${typeCls}">${escapeHtml(c.type)}</span></td>
@@ -235,6 +278,10 @@
           ${adminCell}
         </tr>`;
     }).join('');
+  }
+
+  function updateCourseStats() {
+    // no-op (hero stats removed)
   }
 
   function getLinkedPost(course, posts) {
@@ -272,15 +319,18 @@
 
   document.addEventListener('DOMContentLoaded', () => {
     _allCourses = DEFAULT_COURSES.map(c => ({...c, id: String(c.id)}));
+    updateCourseStats();
     render();
 
     // Real-time listeners for courses and posts
     db.collection('courses').onSnapshot(snap => {
       _allCourses = snap.docs.map(d => d.data());
+      updateCourseStats();
       render();
     });
     db.collection('posts').onSnapshot(snap => {
       _allPosts = snap.docs.map(d => d.data());
+      updateCourseStats();
       render();
     });
 

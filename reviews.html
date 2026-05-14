@@ -20,6 +20,8 @@
   <meta name="twitter:title" content="Course Reviews — The Guide to Pittsburgh Golf" />
   <meta name="twitter:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Pittsburgh_skyline_panorama_at_night.jpg/1200px-Pittsburgh_skyline_panorama_at_night.jpg" />
   <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/editorial.css" />
 </head>
 <body>
 
@@ -58,11 +60,20 @@
   </div>
 </header>
 
-<div class="page-banner">
-  <span class="eyebrow">Western Pennsylvania</span>
-  <h1><mark>Course Reviews</mark></h1>
-  <p>Every course played in person. The good, the bad, and the ones to skip.</p>
-</div>
+<section class="cb-section cb-hero">
+  <div class="cb-hero__grid">
+    <div class="cb-hero__lede">
+      <span class="cb-marker">Western Pennsylvania</span>
+      <h1>
+        <span class="cb-hero__line"><span class="serif">Course</span></span>
+        <span class="cb-hero__line"><mark>Reviews</mark></span>
+      </h1>
+      <p class="cb-hero__sub">
+        Every course played in person. The good, the bad, and the ones to skip.
+      </p>
+    </div>
+  </div>
+</section>
 
 <!-- Admin toolbar -->
 <div class="admin-toolbar-bar" id="adminToolbar" style="display:none;">
@@ -315,6 +326,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="js/firebase-init.js"></script>
 <script src="js/app.js"></script>
+<script src="js/animations.js"></script>
 <script>
   let activeFilter = 'all';
   let _allPosts = [];
