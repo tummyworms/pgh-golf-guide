@@ -407,11 +407,13 @@
 
 /* ─── Newsletter button: shimmer + flag flutter on success ─ */
 .newsletter-section {
-  opacity: 0;
-  transform: translateY(20px);
   transition: opacity 0.8s var(--ease-out-soft), transform 0.8s var(--ease-out-soft);
 }
-.newsletter-section.is-in { opacity: 1; transform: none; }
+.newsletter-section.reveal-anim {
+  opacity: 0;
+  transform: translateY(20px);
+}
+.newsletter-section.reveal-anim.is-in { opacity: 1; transform: none; }
 
 .newsletter-btn { will-change: transform, box-shadow; }
 .newsletter-success {

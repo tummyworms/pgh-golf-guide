@@ -58,7 +58,6 @@
 
   function observeAll() {
     if (!io || prefersReduced) {
-      // Just mark everything visible immediately
       REVEAL_SELECTORS.forEach(sel => {
         document.querySelectorAll(sel).forEach(el => el.classList.add('is-in'));
       });
@@ -66,7 +65,13 @@
     }
     REVEAL_SELECTORS.forEach(sel => {
       document.querySelectorAll(sel).forEach(el => {
-        if (!el.classList.contains('is-in')) io.observe(el);
+        if (!el.classList.contains('is-in')) {
+          // Newsletter section: opt into animation only when JS is running
+          if (el.classList.contains('newsletter-section')) {
+            el.classList.add('reveal-anim');
+          }
+          io.observe(el);
+        }
       });
     });
   }
