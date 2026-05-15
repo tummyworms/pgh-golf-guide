@@ -279,16 +279,19 @@
         <span class="compose-body-label" style="margin:0;">Rating Meters</span>
         <button type="button" class="btn btn-outline btn-sm" onclick="addMeter()">+ Add Meter</button>
       </div>
-      <p class="meters-editor-hint">Rate the course 0–100 on specific attributes. Displayed as circular gauges on the published review. The overall score is the average of all meters.</p>
+      <p class="meters-editor-hint">Rate the course 0–100. Hit ✕ to remove any you don't want — removed ratings won't appear on the review. <em>Conditions</em> is always shown but never counted toward the overall score.</p>
       <div class="meter-chips">
         <button type="button" class="meter-chip" onclick="addMeterPreset('Greens')">Greens</button>
-        <button type="button" class="meter-chip" onclick="addMeterPreset('Course Condition')">Course Condition</button>
-        <button type="button" class="meter-chip" onclick="addMeterPreset('Value for Money')">Value for Money</button>
-        <button type="button" class="meter-chip" onclick="addMeterPreset('Pace of Play')">Pace of Play</button>
-        <button type="button" class="meter-chip" onclick="addMeterPreset('Cart / Service')">Cart / Service</button>
-        <button type="button" class="meter-chip" onclick="addMeterPreset('Scenery')">Scenery</button>
+        <button type="button" class="meter-chip" onclick="addMeterPreset('Conditions')">Conditions</button>
+        <button type="button" class="meter-chip" onclick="addMeterPreset('Layout')">Layout</button>
+        <button type="button" class="meter-chip" onclick="addMeterPreset('Pace')">Pace</button>
+        <button type="button" class="meter-chip" onclick="addMeterPreset('Value')">Value</button>
+        <button type="button" class="meter-chip" onclick="addMeterPreset('Atmosphere')">Atmosphere</button>
+        <button type="button" class="meter-chip" onclick="addMeterPreset('Service')">Service</button>
         <button type="button" class="meter-chip" onclick="addMeterPreset('Facilities')">Facilities</button>
-        <button type="button" class="meter-chip" onclick="addMeterPreset('Staff')">Staff</button>
+        <button type="button" class="meter-chip" onclick="addMeterPreset('Playability')">Playability</button>
+        <button type="button" class="meter-chip" onclick="addMeterPreset('Clubhouse')">Clubhouse</button>
+        <button type="button" class="meter-chip meter-chip--all" onclick="addAllPresets()">+ Add All</button>
       </div>
       <div id="meterList"></div>
     </div>
@@ -567,7 +570,13 @@
   // ── Meter editor ──
   let meters = [];
   function initMeters(data) {
-    meters = data ? data.map(m => ({...m})) : [];
+    meters = (data && data.length) ? data.map(m => ({...m})) : STANDARD_METERS.map(label => ({ label, value: 75 }));
+    renderMeterList();
+  }
+  function addAllPresets() {
+    STANDARD_METERS.forEach(label => {
+      if (!meters.find(m => m.label === label)) meters.push({ label, value: 75 });
+    });
     renderMeterList();
   }
   function renderMeterList() {

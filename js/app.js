@@ -215,22 +215,38 @@ function renderMeterSVG(value) {
   </svg>`;
 }
 
+const STANDARD_METERS = ['Greens','Conditions','Layout','Pace','Value','Atmosphere','Service','Facilities','Playability','Clubhouse'];
+const EXCLUDED_FROM_OVERALL = ['conditions','course condition','course conditions'];
+
 function renderMeters(meters) {
   if (!meters || !meters.length) return '';
-  const overall = Math.round(meters.reduce((s, m) => s + (Number(m.value) || 0), 0) / meters.length);
+  const scoringMeters = meters.filter(m => !EXCLUDED_FROM_OVERALL.includes((m.label||'').toLowerCase()));
+  const overall = scoringMeters.length
+    ? Math.round(scoringMeters.reduce((s, m) => s + (Number(m.value) || 0), 0) / scoringMeters.length)
+    : Math.round(meters.reduce((s, m) => s + (Number(m.value) || 0), 0) / meters.length);
   return `
-    <div class="meters-section">
-      <h3 class="meters-heading">Course Ratings</h3>
-      <div class="meters-grid">
-        <div class="meter-card meter-card-overall">
-          <div class="meter-svg-wrap">${renderMeterSVG(overall)}</div>
-          <div class="meter-label meter-label-overall">Overall Score</div>
-        </div>
-        ${meters.map(m => `
-          <div class="meter-card">
-            <div class="meter-svg-wrap">${renderMeterSVG(m.value)}</div>
-            <div class="meter-label">${escapeHtml(m.label)}</div>
-          </div>`).join('')}
+    <div class="meters-panel">
+      <div class="meters-overall-wrap">
+        <div class="meter-svg-wrap">${renderMeterSVG(overall)}</div>
+        <div class="meters-overall-label">Overall Score</div>
+      </div>
+      <div class="meters-bars">
+        <div class="meters-bars-head">Course Ratings</div>
+        ${meters.map(m => {
+          const v = Math.max(0, Math.min(100, Number(m.value) || 0));
+          const c = v < 35 ? '#c0392b' : v < 65 ? '#c8900a' : '#1e6b3a';
+          const excluded = EXCLUDED_FROM_OVERALL.includes((m.label||'').toLowerCase());
+          return `<div class="meter-bar-row">
+            <div class="meter-bar-head">
+              <span class="meter-bar-name">${escapeHtml(m.label)}</span>
+              <span class="meter-bar-score" style="color:${c}">${v}</span>
+            </div>
+            <div class="meter-bar-track">
+              <div class="meter-bar-fill" style="width:${v}%;background:${c}"></div>
+            </div>
+            ${excluded ? `<p class="meter-bar-disclaimer">Course conditions change seasonally — not included in overall score.</p>` : ''}
+          </div>`;
+        }).join('')}
       </div>
     </div>`;
 }

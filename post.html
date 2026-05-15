@@ -249,16 +249,19 @@
         <span class="compose-body-label" style="margin:0;">Rating Meters</span>
         <button type="button" class="btn btn-outline btn-sm" onclick="addMeter()">+ Add Meter</button>
       </div>
-      <p class="meters-editor-hint">Rate the course 0–100 on specific attributes. Displayed as circular gauges on the published review. The overall score is the average of all meters.</p>
+      <p class="meters-editor-hint">Rate the course 0–100. Hit ✕ to remove any you don't want — removed ratings won't appear on the review. <em>Conditions</em> is always shown but never counted toward the overall score.</p>
       <div class="meter-chips">
         <button type="button" class="meter-chip" onclick="addMeterPreset('Greens')">Greens</button>
-        <button type="button" class="meter-chip" onclick="addMeterPreset('Course Condition')">Course Condition</button>
-        <button type="button" class="meter-chip" onclick="addMeterPreset('Value for Money')">Value for Money</button>
-        <button type="button" class="meter-chip" onclick="addMeterPreset('Pace of Play')">Pace of Play</button>
-        <button type="button" class="meter-chip" onclick="addMeterPreset('Cart / Service')">Cart / Service</button>
-        <button type="button" class="meter-chip" onclick="addMeterPreset('Scenery')">Scenery</button>
+        <button type="button" class="meter-chip" onclick="addMeterPreset('Conditions')">Conditions</button>
+        <button type="button" class="meter-chip" onclick="addMeterPreset('Layout')">Layout</button>
+        <button type="button" class="meter-chip" onclick="addMeterPreset('Pace')">Pace</button>
+        <button type="button" class="meter-chip" onclick="addMeterPreset('Value')">Value</button>
+        <button type="button" class="meter-chip" onclick="addMeterPreset('Atmosphere')">Atmosphere</button>
+        <button type="button" class="meter-chip" onclick="addMeterPreset('Service')">Service</button>
         <button type="button" class="meter-chip" onclick="addMeterPreset('Facilities')">Facilities</button>
-        <button type="button" class="meter-chip" onclick="addMeterPreset('Staff')">Staff</button>
+        <button type="button" class="meter-chip" onclick="addMeterPreset('Playability')">Playability</button>
+        <button type="button" class="meter-chip" onclick="addMeterPreset('Clubhouse')">Clubhouse</button>
+        <button type="button" class="meter-chip meter-chip--all" onclick="addAllPresets()">+ Add All</button>
       </div>
       <div id="meterList"></div>
     </div>
@@ -316,7 +319,6 @@
     document.title = `${post.courseName} Review — The Guide to Pittsburgh Golf`;
 
     const stats = [
-      { label:'Rating',     val: renderStars(post.rating) },
       post.par       ? { label:'Par',        val: post.par }       : null,
       post.yardage   ? { label:'Yardage',    val: post.yardage }   : null,
       post.difficulty? { label:'Difficulty', val: post.difficulty } : null,
@@ -324,41 +326,41 @@
       post.type      ? { label:'Type',       val: post.type }      : null,
     ].filter(Boolean);
 
-    const typeSlug = (post.type||'public').toLowerCase().replace('-','').replace(' ','');
-
     el.innerHTML = `
-      <a href="reviews.html" class="back-link">← Back to Reviews</a>
-
-      <div class="post-meta-bar">
-        <span class="type-pill-dark">${escapeHtml(post.type||'Course')}</span>
-        <span class="post-date-full">${formatDate(post.dateReviewed)}</span>
-        <span class="post-stars">${renderStars(post.rating)}</span>
-        ${post.status==='draft' ? '<span class="draft-badge">Draft</span>' : ''}
+      <div class="post-header-editorial">
+        <div class="post-header-wrap">
+          <div class="post-header-nav">
+            <a href="reviews.html" class="post-back-link">← All Reviews</a>
+            <div class="post-header-pills">
+              <span class="type-pill-dark">${escapeHtml(post.type||'Course')}</span>
+              ${post.status==='draft' ? '<span class="draft-badge">Draft</span>' : ''}
+            </div>
+          </div>
+          ${post.courseOfWeek ? `<div class="cotw-banner" style="margin-bottom:var(--space-m)"><span class="cotw-trophy">🏆</span> Course of the Week</div>` : ''}
+          <span class="cb-marker">Course Review</span>
+          <h1 class="post-course-title">${escapeHtml(post.courseName)}</h1>
+          <div class="post-header-meta">
+            <span class="post-header-location">${escapeHtml(post.location)}</span>
+            <span class="post-meta-dot">·</span>
+            <span class="post-header-date">${formatDate(post.dateReviewed)}</span>
+            <span class="post-meta-dot">·</span>
+            <span class="post-header-stars">${renderStars(post.rating)}</span>
+          </div>
+        </div>
       </div>
-
-      ${post.courseOfWeek ? `<div class="cotw-banner"><span class="cotw-trophy">🏆</span> Course of the Week</div>` : ''}
-      <h1>${escapeHtml(post.courseName)}</h1>
-      <p class="post-location-sub">${escapeHtml(post.location)}</p>
-      <div class="post-divider"></div>
 
       ${post.imageUrl ? `<div class="post-hero-img"><img src="${escapeHtml(post.imageUrl)}" alt="${escapeHtml(post.courseName)}" loading="lazy"></div>` : ''}
 
-      <div class="post-layout">
-        <div class="post-main">
-          <div class="post-body">${renderBody(post.body, post.bodyImages)}</div>
+      ${stats.length ? `<div class="post-stats-strip"><div class="post-stats-strip-inner">${stats.map(s => `<div class="post-stat-item"><div class="post-stat-item-label">${escapeHtml(s.label)}</div><div class="post-stat-item-val">${s.val}</div></div>`).join('')}</div></div>` : ''}
+
+      <div class="post-body-zone">
+        <div class="post-layout">
+          <div class="post-main">
+            <div class="post-body">${renderBody(post.body, post.bodyImages)}</div>
+          </div>
+          ${post.meters && post.meters.length ? `<aside class="post-side">${renderMeters(post.meters)}</aside>` : ''}
         </div>
-        <aside class="post-side">
-          ${stats.length ? `
-            <div class="post-stats-bar">
-              ${stats.map(s => `
-                <div class="stat-cell">
-                  <div class="stat-label">${escapeHtml(s.label)}</div>
-                  <div class="stat-val">${s.val}</div>
-                </div>`).join('')}
-            </div>` : ''}
-          ${renderMeters(post.meters)}
-          ${renderAmenities(post.amenities)}
-        </aside>
+        ${renderAmenities(post.amenities)}
       </div>
     `;
 
@@ -540,7 +542,13 @@
   // ── Meter editor ──
   let meters = [];
   function initMeters(data) {
-    meters = data ? data.map(m => ({...m})) : [];
+    meters = (data && data.length) ? data.map(m => ({...m})) : STANDARD_METERS.map(label => ({ label, value: 75 }));
+    renderMeterList();
+  }
+  function addAllPresets() {
+    STANDARD_METERS.forEach(label => {
+      if (!meters.find(m => m.label === label)) meters.push({ label, value: 75 });
+    });
     renderMeterList();
   }
   function renderMeterList() {
