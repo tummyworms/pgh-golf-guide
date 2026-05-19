@@ -635,14 +635,29 @@
     }
   }
 
-  function onAdminStateChange() { render(); }
-
-  document.addEventListener('DOMContentLoaded', () => {
-    // Real-time listener — re-renders whenever Firestore data changes
-    db.collection('posts').onSnapshot(snap => {
+  let _postsUnsub = null;
+  function setupPostsListener(isAdmin) {
+    if (_postsUnsub) { _postsUnsub(); _postsUnsub = null; }
+    const q = isAdmin
+      ? db.collection('posts')
+      : db.collection('posts').where('status', '==', 'published');
+    _postsUnsub = q.onSnapshot(snap => {
       _allPosts = snap.docs.map(d => d.data());
       render();
+    }, err => {
+      console.error('Posts listener error:', err);
+      _allPosts = [];
+      render();
     });
+  }
+
+  function onAdminStateChange(isAdmin) {
+    render();
+    setupPostsListener(isAdmin);
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    setupPostsListener(false);
     document.querySelectorAll('.filter-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));

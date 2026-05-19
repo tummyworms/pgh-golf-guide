@@ -316,24 +316,40 @@
     showToast('Course removed.');
   }
 
-  function onAdminStateChange() { render(); }
+  let _postsUnsub = null;
+  function setupPostsListener(isAdmin) {
+    if (_postsUnsub) { _postsUnsub(); _postsUnsub = null; }
+    const q = isAdmin
+      ? db.collection('posts')
+      : db.collection('posts').where('status', '==', 'published');
+    _postsUnsub = q.onSnapshot(snap => {
+      _allPosts = snap.docs.map(d => d.data());
+      updateCourseStats();
+      render();
+    }, err => {
+      console.error('Posts listener error:', err);
+      _allPosts = [];
+      render();
+    });
+  }
+
+  function onAdminStateChange(isAdmin) {
+    render();
+    setupPostsListener(isAdmin);
+  }
 
   document.addEventListener('DOMContentLoaded', () => {
     _allCourses = DEFAULT_COURSES.map(c => ({...c, id: String(c.id)}));
     updateCourseStats();
     render();
 
-    // Real-time listeners for courses and posts
     db.collection('courses').onSnapshot(snap => {
       _allCourses = snap.docs.map(d => d.data());
       updateCourseStats();
       render();
     });
-    db.collection('posts').onSnapshot(snap => {
-      _allPosts = snap.docs.map(d => d.data());
-      updateCourseStats();
-      render();
-    });
+
+    setupPostsListener(false);
 
     document.querySelectorAll('.filter-btn').forEach(btn => {
       btn.addEventListener('click', () => {

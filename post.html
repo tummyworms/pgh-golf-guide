@@ -311,7 +311,7 @@
     currentPost = post;
     const el = document.getElementById('postContent');
 
-    if (!post) {
+    if (!post || (post.status !== 'published' && !isAdminLoggedIn())) {
       el.innerHTML = `<div class="empty-state" style="padding:80px 0"><div class="icon">⛳</div><p>Review not found. <a href="reviews.html">Back to reviews</a></p></div>`;
       return;
     }
@@ -606,7 +606,7 @@
     }
   }
 
-  function onAdminStateChange() { updateAdminBar(); }
+  function onAdminStateChange() { loadPost(); }
 
   document.addEventListener('DOMContentLoaded', loadPost);
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCompose(); });
